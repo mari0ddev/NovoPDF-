@@ -1379,7 +1379,3 @@ useEffect(() => {
   )
 }
 
-const tbBtn = {
-  height: 30, padding: '0 8px', borderRadius: 6, border: '1px solid #e2e8f0',
-  background: '#f8fafc', cursor: 'pointer', fontSize: 12, color: '#374151', whiteSpace: 'nowrap',
-}
