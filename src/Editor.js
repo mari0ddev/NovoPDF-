@@ -418,7 +418,7 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
   }
 
   const handleMouseLeave = () => {
-    leaveTimeout.current = setTimeout(() => setHovered(false), 400)
+    leaveTimeout.current = setTimeout(() => setHovered(false), 1200)
   }
 
   const onPointerDown = (e) => {
