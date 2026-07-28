@@ -406,94 +406,173 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
   const [dragging, setDragging] = useState(false)
   const [resizing, setResizing] = useState(false)
   const [hovered, setHovered] = useState(false)
+
   const dragOffset = useRef({ x: 0, y: 0 })
   const startSize = useRef(0)
-  const startMouseX = useRef(0)
+  const startPointerX = useRef(0)
   const leaveTimeout = useRef(null)
 
   const handleMouseEnter = () => {
     clearTimeout(leaveTimeout.current)
     setHovered(true)
   }
+
   const handleMouseLeave = () => {
     leaveTimeout.current = setTimeout(() => setHovered(false), 400)
   }
 
-  const onMouseDown = (e) => {
-    e.preventDefault(); e.stopPropagation()
+  const onPointerDown = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
     const pageRect = pageRef?.current?.getBoundingClientRect()
     if (!pageRect) return
+
     setDragging(true)
-    dragOffset.current = { x: e.clientX - pageRect.left - pos.x, y: e.clientY - pageRect.top - pos.y }
+
+    dragOffset.current = {
+      x: e.clientX - pageRect.left - pos.x,
+      y: e.clientY - pageRect.top - pos.y,
+    }
   }
 
   useEffect(() => {
     if (!dragging) return
+
     const onMove = (e) => {
       const pageRect = pageRef?.current?.getBoundingClientRect()
       if (!pageRect) return
-      setPos({ x: e.clientX - pageRect.left - dragOffset.current.x, y: e.clientY - pageRect.top - dragOffset.current.y })
+
+      setPos({
+        x: e.clientX - pageRect.left - dragOffset.current.x,
+        y: e.clientY - pageRect.top - dragOffset.current.y,
+      })
     }
-    const onUp = () => { setDragging(false); onCommitPosition?.(id, pos) }
-    window.addEventListener('mousemove', onMove)
-    window.addEventListener('mouseup', onUp)
-    return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
+
+    const onUp = () => {
+      setDragging(false)
+      onCommitPosition?.(id, pos)
+    }
+
+    window.addEventListener("pointermove", onMove)
+    window.addEventListener("pointerup", onUp)
+
+    return () => {
+      window.removeEventListener("pointermove", onMove)
+      window.removeEventListener("pointerup", onUp)
+    }
   }, [dragging, pageRef, id, pos, onCommitPosition])
 
-  const onResizeDown = (e) => {
-    e.preventDefault(); e.stopPropagation()
+  const onResizePointerDown = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
     setResizing(true)
     startSize.current = size
-    startMouseX.current = e.clientX
+    startPointerX.current = e.clientX
   }
 
   useEffect(() => {
     if (!resizing) return
+
     const onMove = (e) => {
-      const delta = e.clientX - startMouseX.current
+      const delta = e.clientX - startPointerX.current
       setSize(Math.max(30, startSize.current + delta))
     }
-    const onUp = () => { setResizing(false); onCommitSize?.(id, size) }
-    window.addEventListener('mousemove', onMove)
-    window.addEventListener('mouseup', onUp)
-    return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
+
+    const onUp = () => {
+      setResizing(false)
+      onCommitSize?.(id, size)
+    }
+
+    window.addEventListener("pointermove", onMove)
+    window.addEventListener("pointerup", onUp)
+
+    return () => {
+      window.removeEventListener("pointermove", onMove)
+      window.removeEventListener("pointerup", onUp)
+    }
   }, [resizing, id, size, onCommitSize])
 
   const showControls = hovered || dragging || resizing
 
   return (
     <div
-      onMouseDown={onMouseDown}
+      onPointerDown={onPointerDown}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
-        position: 'absolute', left: pos.x, top: pos.y, zIndex: 20,
-        cursor: dragging ? 'grabbing' : 'grab',
-        outline: showControls ? '1px dashed rgba(99,102,241,0.5)' : 'none',
+        position: "absolute",
+        left: pos.x,
+        top: pos.y,
+        zIndex: 20,
+        cursor: dragging ? "grabbing" : "grab",
+        outline: showControls ? "1px dashed rgba(99,102,241,0.5)" : "none",
         outlineOffset: 2,
-        padding: 10, margin: -10,
+        padding: 10,
+        margin: -10,
+        touchAction: "none",
       }}
     >
       {showControls && (
-        <button className="no-print"
-          onMouseDown={(e) => e.stopPropagation()}
+        <button
+          className="no-print"
+          onPointerDown={(e) => e.stopPropagation()}
           onMouseEnter={handleMouseEnter}
           onClick={onRemove}
-          style={{ position: 'absolute', top: -12, right: -4, background: '#1e293b', border: 'none', borderRadius: '50%', width: 18, height: 18, color: '#f87171', fontSize: 11, cursor: 'pointer', lineHeight: 1, zIndex: 25 }}
-        >✕</button>
+          style={{
+            position: "absolute",
+            top: -12,
+            right: -4,
+            background: "#1e293b",
+            border: "none",
+            borderRadius: "50%",
+            width: 18,
+            height: 18,
+            color: "#f87171",
+            fontSize: 11,
+            cursor: "pointer",
+            lineHeight: 1,
+            zIndex: 25,
+          }}
+        >
+          ✕
+        </button>
       )}
-      <img src={src} alt="" draggable={false} style={{ width: size, display: 'block', userSelect: 'none', pointerEvents: 'none' }} />
+
+      <img
+        src={src}
+        alt=""
+        draggable={false}
+        style={{
+          width: size,
+          display: "block",
+          userSelect: "none",
+          pointerEvents: "none",
+        }}
+      />
+
       {showControls && (
-        <div className="no-print"
-          onMouseDown={onResizeDown}
+        <div
+          className="no-print"
+          onPointerDown={onResizePointerDown}
           onMouseEnter={handleMouseEnter}
-          style={{ position: 'absolute', right: 6, bottom: 6, width: 12, height: 12, background: '#6366f1', borderRadius: '50%', cursor: 'nwse-resize', zIndex: 25 }}
+          style={{
+            position: "absolute",
+            right: 6,
+            bottom: 6,
+            width: 12,
+            height: 12,
+            background: "#6366f1",
+            borderRadius: "50%",
+            cursor: "nwse-resize",
+            zIndex: 25,
+          }}
         />
       )}
     </div>
   )
 }
-
 
 
 
