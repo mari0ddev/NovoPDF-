@@ -422,19 +422,21 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
   }
 
   const onPointerDown = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
+  e.preventDefault()
+  e.stopPropagation()
 
-    const pageRect = pageRef?.current?.getBoundingClientRect()
-    if (!pageRect) return
+  setHovered(true)   // <-- adaugă asta
 
-    setDragging(true)
+  const pageRect = pageRef?.current?.getBoundingClientRect()
+  if (!pageRect) return
 
-    dragOffset.current = {
-      x: e.clientX - pageRect.left - pos.x,
-      y: e.clientY - pageRect.top - pos.y,
-    }
+  setDragging(true)
+
+  dragOffset.current = {
+    x: e.clientX - pageRect.left - pos.x,
+    y: e.clientY - pageRect.top - pos.y,
   }
+}
 
   useEffect(() => {
     if (!dragging) return
@@ -494,7 +496,7 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
     }
   }, [resizing, id, size, onCommitSize])
 
-  const showControls = hovered || dragging || resizing
+const showControls = true || hovered || dragging || resizing
 
   return (
     <div
