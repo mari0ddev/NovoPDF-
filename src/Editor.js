@@ -418,7 +418,7 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
   }
 
   const handleMouseLeave = () => {
-    leaveTimeout.current = setTimeout(() => setHovered(false), 1200)
+    leaveTimeout.current = setTimeout(() => setHovered(false), 1500)
   }
 
   const onPointerDown = (e) => {
@@ -517,7 +517,10 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
       {showControls && (
         <button
           className="no-print"
-          onPointerDown={(e) => e.stopPropagation()}
+          onPointerDown={(e) => {
+          e.stopPropagation()
+          setHovered(true)
+      }}
           onMouseEnter={handleMouseEnter}
           onClick={onRemove}
           style={{
