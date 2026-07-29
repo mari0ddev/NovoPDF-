@@ -16,7 +16,7 @@ function App() {
           }
         })
       },
-      { threshold: 0.12 }
+      { threshold: 0.15 }
     )
 
     document.querySelectorAll(
