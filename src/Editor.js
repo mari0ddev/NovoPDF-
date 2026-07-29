@@ -257,146 +257,221 @@ const Sep = () => (
 )
 
 /* ---- FREE TEXT BOX ---- */
-/* ---- FREE TEXT INLINE (stil "click si scrie", fara cutie) ---- */
+/* ---- FREE TEXT BOX ---- */
+
 function FreeTextInline({ id, x, y, pageRef, onRemove, onCommitPosition }) {
+  const [text, setText] = useState('')
   const [editing, setEditing] = useState(true)
+  const [fontSize, setFontSize] = useState(14)
+  const [color, setColor] = useState('#000000')
+  const [highlightColor, setHighlightColor] = useState('') 
   const [pos, setPos] = useState({ x, y })
   const [dragging, setDragging] = useState(false)
-  const [showToolbar, setShowToolbar] = useState(false)
+  const [selected, setSelected] = useState(true) // inlocuieste showToolbar - persistent pana dai tap in alta parte
   const dragOffset = useRef({ x: 0, y: 0 })
   const spanRef = useRef(null)
   const wrapRef = useRef(null)
 
+  const applyFormat = (command) => {
+  spanRef.current?.focus()
+  document.execCommand(command, false, null)
+}
   useEffect(() => {
     if (editing) setTimeout(() => spanRef.current?.focus(), 30)
   }, [editing])
 
   useEffect(() => {
-    if (!editing) return
-    const onDocClick = (e) => {
+    if (!editing && !selected) return
+    const onDocDown = (e) => {
       if (wrapRef.current && !wrapRef.current.contains(e.target)) {
         setEditing(false)
-        setShowToolbar(false)
+        setSelected(false)
         if (!spanRef.current?.textContent?.trim()) onRemove?.()
       }
     }
-    document.addEventListener('mousedown', onDocClick)
-    return () => document.removeEventListener('mousedown', onDocClick)
-  }, [editing, onRemove])
+    document.addEventListener('mousedown', onDocDown)
+    document.addEventListener('touchstart', onDocDown)
+    return () => {
+      document.removeEventListener('mousedown', onDocDown)
+      document.removeEventListener('touchstart', onDocDown)
+    }
+  }, [editing, selected, onRemove])
 
-  const onMouseDown = (e) => {
+
+
+  const applyHighlight = (hexColor) => {
+  spanRef.current?.focus()
+  document.execCommand('hiliteColor', false, hexColor)
+  // fallback pentru Safari/Firefox mai vechi, unde hiliteColor uneori nu merge
+  if (document.queryCommandState && !document.queryCommandSupported('hiliteColor')) {
+    document.execCommand('backColor', false, hexColor)
+  }
+}
+  // ---- helper: extrage coordonate din mouse SAU touch ----
+  const getPoint = (e) => {
+    if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    return { x: e.clientX, y: e.clientY }
+  }
+
+  const startDrag = (e) => {
     if (editing) return
-    e.preventDefault(); e.stopPropagation()
+    setSelected(true)
+    e.stopPropagation()
+    const p = getPoint(e)
     const pageRect = pageRef?.current?.getBoundingClientRect()
     if (!pageRect) return
     setDragging(true)
-    dragOffset.current = { x: e.clientX - pageRect.left - pos.x, y: e.clientY - pageRect.top - pos.y }
+    dragOffset.current = { x: p.x - pageRect.left - pos.x, y: p.y - pageRect.top - pos.y }
   }
 
   useEffect(() => {
     if (!dragging) return
     const onMove = (e) => {
+      const p = getPoint(e)
       const pageRect = pageRef?.current?.getBoundingClientRect()
       if (!pageRect) return
-      setPos({ x: e.clientX - pageRect.left - dragOffset.current.x, y: e.clientY - pageRect.top - dragOffset.current.y })
+      setPos({ x: p.x - pageRect.left - dragOffset.current.x, y: p.y - pageRect.top - dragOffset.current.y })
     }
     const onUp = () => { setDragging(false); onCommitPosition?.(id, pos) }
     window.addEventListener('mousemove', onMove)
     window.addEventListener('mouseup', onUp)
-    return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
+    window.addEventListener('touchmove', onMove, { passive: false })
+    window.addEventListener('touchend', onUp)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseup', onUp)
+      window.removeEventListener('touchmove', onMove)
+      window.removeEventListener('touchend', onUp)
+    }
   }, [dragging, pageRef, id, pos, onCommitPosition])
 
+  const handleInput = (e) => setText(e.currentTarget.textContent)
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
-      e.preventDefault()
-      setEditing(false)
-      setShowToolbar(false)
-      if (!spanRef.current?.textContent?.trim()) onRemove?.()
+      e.preventDefault(); setEditing(false); setSelected(false)
+      if (!text.trim()) onRemove?.()
     }
   }
 
-  const exec = (cmd, val = null) => {
-    spanRef.current?.focus()
-    document.execCommand(cmd, false, val)
-  }
-
-  const applyFontSize = (px) => {
-    spanRef.current?.focus()
-    document.execCommand('fontSize', false, '7')
-    spanRef.current?.querySelectorAll('font[size="7"]').forEach(f => {
-      f.removeAttribute('size')
-      f.style.fontSize = px + 'px'
-    })
-  }
+  const showToolbar = editing || selected
 
   return (
     <div
       ref={wrapRef}
-      onMouseDown={onMouseDown}
+      onMouseDown={startDrag}
+      onTouchStart={startDrag}
       onDoubleClick={() => setEditing(true)}
-      onMouseEnter={() => !editing && setShowToolbar(true)}
-      onMouseLeave={() => !editing && setShowToolbar(false)}
+      onClick={() => !editing && setSelected(true)}
       style={{
         position: 'absolute', left: pos.x, top: pos.y, zIndex: 20,
         cursor: editing ? 'text' : (dragging ? 'grabbing' : 'grab'),
-        userSelect: dragging ? 'none' : 'auto',
+        touchAction: editing ? 'auto' : 'none', // opreste scroll-ul paginii cand tragi textul pe telefon
       }}
     >
-      {(editing || showToolbar) && (
-        <div
-          className="no-print"
-          onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
-          style={{
-            position: 'absolute', top: -34, left: 0,
-            display: 'flex', alignItems: 'center', gap: 3,
-            background: '#1e293b', borderRadius: 6, padding: '3px 5px',
-            whiteSpace: 'nowrap', zIndex: 30,
-          }}
-        >
-          <button onClick={() => exec('bold')} title="Bold"
-            style={{ width: 22, height: 22, background: 'none', border: 'none', color: '#fff', fontWeight: 700, fontSize: 12, cursor: 'pointer', borderRadius: 3 }}>B</button>
-          <button onClick={() => exec('italic')} title="Italic"
-            style={{ width: 22, height: 22, background: 'none', border: 'none', color: '#fff', fontStyle: 'italic', fontSize: 12, cursor: 'pointer', borderRadius: 3 }}>I</button>
-          <button onClick={() => exec('underline')} title="Underline"
-            style={{ width: 22, height: 22, background: 'none', border: 'none', color: '#fff', textDecoration: 'underline', fontSize: 12, cursor: 'pointer', borderRadius: 3 }}>U</button>
-          <button onClick={() => exec('hiliteColor', '#fef08a')} title="Highlight"
-            style={{ width: 22, height: 22, background: 'none', border: 'none', color: '#fef08a', fontSize: 12, cursor: 'pointer', borderRadius: 3 }}>🖍</button>
-          <select onChange={e => applyFontSize(e.target.value)} defaultValue="14"
-            style={{ height: 22, fontSize: 10, borderRadius: 3, border: 'none', background: '#334155', color: '#fff' }}>
-            {[8,9,10,11,12,14,16,18,20,24,28,32].map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
-          <input type="color" onChange={e => exec('foreColor', e.target.value)}
-            style={{ width: 20, height: 20, border: 'none', padding: 0, borderRadius: 3, background: 'none', cursor: 'pointer' }} />
-          <button onClick={onRemove}
-            style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer', fontSize: 12, lineHeight: 1, marginLeft: 2 }}>✕</button>
-        </div>
-      )}
+      {showToolbar && (
+  <div
+    onMouseDown={e => e.stopPropagation()}
+    onTouchStart={e => e.stopPropagation()}
+    style={{
+      position: 'absolute', top: -34, left: 0,
+      display: 'flex', alignItems: 'center', gap: 4,
+      background: '#1e293b', borderRadius: 6, padding: '4px 6px',
+      whiteSpace: 'nowrap',
+    }}
+  >
+    <button
+      onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
+      onClick={() => applyFormat('bold')}
+      style={{ width: 24, height: 24, border: 'none', borderRadius: 3, background: '#334155', color: '#fff', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}
+    >B</button>
+    <button
+      onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
+      onClick={() => applyFormat('italic')}
+      style={{ width: 24, height: 24, border: 'none', borderRadius: 3, background: '#334155', color: '#fff', fontStyle: 'italic', fontSize: 12, cursor: 'pointer' }}
+    >I</button>
+    <button
+      onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
+      onClick={() => applyFormat('underline')}
+      style={{ width: 24, height: 24, border: 'none', borderRadius: 3, background: '#334155', color: '#fff', textDecoration: 'underline', fontSize: 12, cursor: 'pointer' }}
+    >U</button>
+
+
+
+<button
+  onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
+  onClick={() => applyHighlight(highlightColor)}
+  title="Highlight"
+  style={{ width: 24, height: 24, border: 'none', borderRadius: 3, background: highlightColor, color: '#713f12', fontWeight: 700, fontSize: 11, cursor: 'pointer' }}
+>H</button>
+
+<input
+  type="color"
+  value={highlightColor}
+  onMouseDown={e => e.stopPropagation()}
+  onChange={e => {
+    setHighlightColor(e.target.value)
+    applyHighlight(e.target.value)
+  }}
+  title="Culoare highlight"
+  style={{ width: 20, height: 24, border: 'none', padding: 0, borderRadius: 3, background: 'none' }}
+/>
+
+
+
+
+
+    <select
+      value={fontSize}
+      onChange={e => setFontSize(Number(e.target.value))}
+      style={{ height: 24, fontSize: 12, borderRadius: 3, border: 'none', background: '#334155', color: '#fff' }}
+    >
+      {[8,9,10,11,12,14,16,18,20,24,28,32].map(s => <option key={s} value={s}>{s}</option>)}
+    </select>
+
+    <input
+      type="color"
+      value={color}
+      onMouseDown={e => e.stopPropagation()}
+      onChange={e => {
+        setColor(e.target.value)
+        spanRef.current?.focus()
+        document.execCommand('foreColor', false, e.target.value)
+      }}
+      style={{ width: 24, height: 24, border: 'none', padding: 0, borderRadius: 3, background: 'none' }}
+    />
+
+    <button onClick={onRemove}
+      style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer', fontSize: 14, lineHeight: 1, padding: '0 4px' }}>✕</button>
+  </div>
+)}
 
       <span
         ref={spanRef}
         contentEditable={editing}
         suppressContentEditableWarning
+        onInput={handleInput}
         onKeyDown={handleKeyDown}
         style={{
           display: 'inline-block',
           minWidth: editing ? 20 : 'auto',
-          fontSize: 14,
-          fontWeight: 'normal',
-          fontStyle: 'normal',
-          color: '#000000',
+          fontSize: `${fontSize}px`,
+          color,
           lineHeight: 1.4,
           fontFamily: 'inherit',
           outline: 'none',
           whiteSpace: 'pre-wrap',
           borderBottom: editing ? '1px solid rgba(99,102,241,0.6)' : 'none',
-          boxShadow: (!editing && showToolbar) ? '0 0 0 1px rgba(99,102,241,0.35)' : 'none',
+          boxShadow: (!editing && selected) ? '0 0 0 1px rgba(99,102,241,0.35)' : 'none',
           borderRadius: 2,
           padding: '0 2px',
         }}
-      />
+      >
+        {text}
+      </span>
     </div>
   )
 }
+
 
 
 
