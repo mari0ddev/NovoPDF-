@@ -36,14 +36,7 @@ function LandingPage() {
           </p>
           <h3>Save time, work quickly, and deliver professional documents.</h3>
 
-          <a
-            href="https://calendly.com/mariodumidesign/30min"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cta-btn"
-          >
-            Log In
-          </a>
+       
           <Link to="/editor" className="cta-btn">
             Start
           </Link>
