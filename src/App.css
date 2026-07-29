@@ -255,123 +255,299 @@ header {
   font-size: 1.2rem;
 }
 
-/* RESPONSIVE - HAMBURGER */
-@media (max-width: 768px) {
-  .nav-links {
-    position: fixed;
-    top: 90px;
-    left: -100%;
-    height: calc(100vh - 90px);
+/* 
+   Animatii     */
+
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-50px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(50px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.animate-fadeInUp    { animation: fadeInUp   0.7s ease both; }
+.animate-fadeInLeft  { animation: fadeInLeft  0.7s ease both; }
+.animate-fadeInRight { animation: fadeInRight 0.7s ease both; }
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.25s; }
+.delay-3 { animation-delay: 0.4s; }
+.delay-4 { animation-delay: 0.55s; }
+.delay-5 { animation-delay: 0.7s; }
+
+/* 
+   HERO — RESPONSIVE
+ */
+@media (max-width: 1200px) {
+  .hero {
+    padding: 80px 60px;
+  }
+  .hero-text {
+    margin-left: 40px;
+  }
+  .hero-text-big {
+    font-size: 2.3rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero {
+    flex-direction: column-reverse !important;
+    text-align: center;
+    padding: 60px 32px;
+    gap: 32px;
+  }
+  .hero-text {
+    max-width: 100%;
+    margin-left: 0 !important;
+  }
+  .hero-subtitle {
+    text-align: center;
+  }
+  .hero-text-big {
+    font-size: 2rem;
+    max-width: 420px;
+    margin: 0 auto 20px;
+    text-align: left;
+    line-height: 1.4;
+  }
+  .hero-text h3 {
+    font-size: 1.1rem;
+    max-width: 420px;
+    margin: 0 auto 32px;
+    text-align: left;
+  }
+  .cta-btn {
+    margin: 0 8px 12px 0;
+  }
+  .hero-image {
+    display: flex;
+    justify-content: center;
+  }
+  .hero-image img {
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 50px 20px;
+  }
+  .hero-text-big {
+    font-size: 1.6rem;
+    max-width: 100%;
+    text-align: center;
+  }
+  .hero-text h3 {
+    font-size: 1rem;
+    text-align: center;
+    max-width: 100%;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  .cta-btn {
+    display: block;
     width: 100%;
-    background: white;
+    max-width: 280px;
+    margin: 0 auto 12px;
+    text-align: center;
+    padding: 16px 24px;
+    font-size: 1rem;
+  }
+  .hero-image img {
+    max-width: 100%;
+  }
+}
+
+/* 
+   ABOUT (HERO-1) — RESPONSIVE
+ */
+@media (max-width: 1200px) {
+  .hero-1 {
+    padding: 80px 60px;
+  }
+  .hero-text-1 {
+    margin-left: 40px;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-1 {
+    flex-direction: column !important;
+    text-align: center;
+    padding: 60px 32px;
+    gap: 32px;
+  }
+  .hero-text-1 {
+    max-width: 100%;
+    margin-left: 0 !important;
+  }
+  .hero-subtitle-1 {
+    text-align: center;
+    font-size: 1.4rem;
+  }
+  .hero-text-big-1 {
+    font-size: 1.2rem;
+    text-align: left;
+    max-width: 480px;
+    margin: 0 auto 16px;
+    line-height: 1.7;
+  }
+  .hero-desc-1 {
+    font-size: 1.1rem;
+    text-align: left;
+    max-width: 480px;
+    margin: 0 auto 32px;
+  }
+  .hero-images-1 {
+    display: flex;
+    justify-content: center;
+  }
+  .hero-images-1 img {
+    max-width: 380px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-1 {
+    padding: 50px 20px;
+  }
+  .hero-text-big-1 {
+    font-size: 1rem;
+    text-align: center;
+    max-width: 100%;
+  }
+  .hero-desc-1 {
+    font-size: 1rem;
+    text-align: center;
+    max-width: 100%;
+  }
+  .hero-subtitle-1 {
+    font-size: 1.2rem;
+  }
+  .hero-images-1 img {
+    max-width: 100%;
+  }
+}
+
+/* 
+   WHY CHOOSE (HELP SECTION) — RESPONSIVE
+*/
+@media (max-width: 1100px) {
+  .help-section {
+    padding: 80px 40px;
+  }
+  .help-section h2 {
+    font-size: 3rem;
+    margin-bottom: 60px;
+  }
+  .help-left h1 {
+    margin-left: 20px;
+    font-size: 1.5rem;
+  }
+  .help-right ul {
+    margin-left: 20px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .help-section .content {
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    padding-top: 60px;
-    transition: left 0.4s ease;
+    gap: 32px;
   }
-
-  .nav-links.nav-active {
-    left: 0;
+  .help-left h1 {
+    text-align: center;
+    margin-left: 0;
+    max-width: 100%;
+    font-size: 1.4rem;
   }
-
-  .hamburger {
-    display: block;
-    z-index: 1001;
+  .help-right ul {
+    text-align: left;
+    margin-left: 0;
+    max-width: 100%;
+    font-size: 1.1rem;
+  }
+  .help-section h2 {
+    font-size: 2.4rem;
+  }
+  .help-section .subtext {
+    font-size: 1.2rem;
+    padding: 0 16px;
   }
 }
 
-/* EDITOR CARD - STILUL TĂU FAIN */
-.pdf-card {
-  width: 900px;
-  max-width: 95%;
-  margin: 80px auto;
-  padding: 80px 50px;
-  background: #fff;
-  border-radius: 34px;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-  border: 2px dashed #e5e7eb;
-  transition: 0.3s ease;
-  cursor: pointer;
+@media (max-width: 600px) {
+  .help-section {
+    padding: 50px 20px;
+  }
+  .help-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 40px;
+  }
+  .help-left h1 {
+    font-size: 1.2rem;
+  }
+  .help-right ul {
+    font-size: 1rem;
+  }
+  .help-section .subtext {
+    font-size: 1rem;
+    margin: 40px auto;
+  }
+  .cta-button {
+    font-size: 1.1rem;
+    padding: 12px 28px;
+  }
 }
 
-.pdf-card:hover {
-  border-color: #2563eb;
-  transform: translateY(-4px);
+/* 
+   PDF CARD — RESPONSIVE
+ */
+@media (max-width: 768px) {
+  .pdf-card {
+    padding: 50px 24px;
+    margin: 40px auto;
+    border-radius: 20px;
+  }
+  .pdf-card h2 {
+    font-size: 1.5rem;
+  }
+  .pdf-icon {
+    width: 80px;
+    height: 110px;
+  }
+  .plus {
+    font-size: 40px;
+  }
 }
 
-.pdf-icon {
-  width: 120px;
-  height: 160px;
-  margin: 0 auto 30px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+/* 
+   SECTION CONTAINER — RESPONSIVE
+ */
+@media (max-width: 768px) {
+  .section-container {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px;
+    gap: 24px;
+  }
+  .box-image {
+    max-width: 100%;
+  }
 }
-
-.pdf-icon:hover {
-  transform: scale(1.05);
-}
-
-.plus {
-  font-size: 60px;
-  color: #2563eb;
-  font-weight: 300;
-}
-
-.pdf-card h2 {
-  font-size: 2rem;
-  color: #2563eb;
-  margin-bottom: 10px;
-}
-
-.or {
-  margin: 10px 0;
-  color: #2563eb;
-  font-weight: 600;
-}
-
-.upload-btn {
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  padding: 14px 28px;
-  font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-bottom: 15px;
-}
-
-.upload-btn:hover {
-  background: #041d54;
-}
-
-.pdf-card small {
-  color: #6b7280;
-}
-
-/* Când PDF-ul e încărcat - să arate frumos */
-.pdf-viewer {
-  margin-top: 40px;
-}
-
-.page-container {
-  margin: 30px auto;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-  border-radius: 12px;
-  overflow: hidden;
-  max-width: 800px;
-}
-
-
-/* ===============================
-   EDITOR PDF – LAYOUT TIP PDFE
-   =============================== */
 
 
 /* ===============================
