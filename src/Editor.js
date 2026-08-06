@@ -264,18 +264,23 @@ function FreeTextInline({ id, x, y, pageRef, onRemove, onCommitPosition }) {
   const [editing, setEditing] = useState(true)
   const [fontSize, setFontSize] = useState(14)
   const [color, setColor] = useState('#000000')
-  const [highlightColor, setHighlightColor] = useState('') 
+  const [highlightColor, setHighlightColor] = useState('#fef08a') // galben implicit
+  const [highlighted, setHighlighted] = useState(false) // NOU: starea toggle-ului de highlight
   const [pos, setPos] = useState({ x, y })
   const [dragging, setDragging] = useState(false)
-  const [selected, setSelected] = useState(true) // inlocuieste showToolbar - persistent pana dai tap in alta parte
+  const [resizing, setResizing] = useState(false) // NOU: resize prin tragere, ca la imagine
+  const [selected, setSelected] = useState(true)
   const dragOffset = useRef({ x: 0, y: 0 })
+  const startFontSize = useRef(0)
+  const startPointerX = useRef(0)
   const spanRef = useRef(null)
   const wrapRef = useRef(null)
 
   const applyFormat = (command) => {
-  spanRef.current?.focus()
-  document.execCommand(command, false, null)
-}
+    spanRef.current?.focus()
+    document.execCommand(command, false, null)
+  }
+
   useEffect(() => {
     if (editing) setTimeout(() => spanRef.current?.focus(), 30)
   }, [editing])
@@ -297,17 +302,45 @@ function FreeTextInline({ id, x, y, pageRef, onRemove, onCommitPosition }) {
     }
   }, [editing, selected, onRemove])
 
+  // ---- NOU: toggle highlight (apasa o data = galben, apasa iar = se sterge) ----
+  const toggleHighlight = () => {
+    spanRef.current?.focus()
+    const next = !highlighted
+    const colorToApply = next ? (highlightColor || '#fef08a') : 'transparent'
 
-
-  const applyHighlight = (hexColor) => {
-  spanRef.current?.focus()
-  document.execCommand('hiliteColor', false, hexColor)
-  // fallback pentru Safari/Firefox mai vechi, unde hiliteColor uneori nu merge
-  if (document.queryCommandState && !document.queryCommandSupported('hiliteColor')) {
-    document.execCommand('backColor', false, hexColor)
+    document.execCommand('hiliteColor', false, colorToApply)
+    if (document.queryCommandState && !document.queryCommandSupported('hiliteColor')) {
+      document.execCommand('backColor', false, colorToApply)
+    }
+    setHighlighted(next)
   }
-}
-  // ---- helper: extrage coordonate din mouse SAU touch ----
+
+  // ---- NOU: aplica marimea fontului DOAR pe textul selectat, nu pe toata cutia ----
+  const applyFontSize = (size) => {
+    spanRef.current?.focus()
+    // marcam selectia cu size="7" (singura valoare mare din execCommand), apoi
+    // inlocuim acele <font size="7"> cu span-uri cu font-size real in px
+    document.execCommand('fontSize', false, '7')
+    const markers = spanRef.current.querySelectorAll('font[size="7"]')
+    markers.forEach(el => {
+      const span = document.createElement('span')
+      span.style.fontSize = size + 'px'
+      while (el.firstChild) span.appendChild(el.firstChild)
+      el.parentNode.replaceChild(span, el)
+    })
+  }
+
+  // cand utilizatorul alege alta culoare din color picker, o aplicam si marcam ca "highlighted"
+  const handleHighlightColorChange = (hex) => {
+    setHighlightColor(hex)
+    spanRef.current?.focus()
+    document.execCommand('hiliteColor', false, hex)
+    if (document.queryCommandState && !document.queryCommandSupported('hiliteColor')) {
+      document.execCommand('backColor', false, hex)
+    }
+    setHighlighted(true)
+  }
+
   const getPoint = (e) => {
     if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY }
     return { x: e.clientX, y: e.clientY }
@@ -345,7 +378,41 @@ function FreeTextInline({ id, x, y, pageRef, onRemove, onCommitPosition }) {
     }
   }, [dragging, pageRef, id, pos, onCommitPosition])
 
+  // ---- NOU: resize prin tragere de maner, ca la FloatingImage ----
+  // schimba fontSize-ul intregii cutii de text (nu doar al selectiei)
+  const onResizePointerDown = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setResizing(true)
+    startFontSize.current = fontSize
+    startPointerX.current = e.touches ? e.touches[0].clientX : e.clientX
+  }
+
+  useEffect(() => {
+    if (!resizing) return
+    const onMove = (e) => {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX
+      const delta = clientX - startPointerX.current
+      // 3px tragere = 1px marime font, cu limite rezonabile 8-96
+      const next = Math.max(8, Math.min(96, Math.round(startFontSize.current + delta / 3)))
+      setFontSize(next)
+    }
+    const onUp = () => setResizing(false)
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+    window.addEventListener('touchmove', onMove, { passive: false })
+    window.addEventListener('touchend', onUp)
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onUp)
+      window.removeEventListener('touchmove', onMove)
+      window.removeEventListener('touchend', onUp)
+    }
+  }, [resizing])
+
+
   const handleInput = (e) => setText(e.currentTarget.textContent)
+
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
       e.preventDefault(); setEditing(false); setSelected(false)
@@ -365,85 +432,86 @@ function FreeTextInline({ id, x, y, pageRef, onRemove, onCommitPosition }) {
       style={{
         position: 'absolute', left: pos.x, top: pos.y, zIndex: 20,
         cursor: editing ? 'text' : (dragging ? 'grabbing' : 'grab'),
-        touchAction: editing ? 'auto' : 'none', // opreste scroll-ul paginii cand tragi textul pe telefon
+        touchAction: editing ? 'auto' : 'none',
       }}
     >
       {showToolbar && (
-  <div
-    onMouseDown={e => e.stopPropagation()}
-    onTouchStart={e => e.stopPropagation()}
-    style={{
-      position: 'absolute', top: -34, left: 0,
-      display: 'flex', alignItems: 'center', gap: 4,
-      background: '#1e293b', borderRadius: 6, padding: '4px 6px',
-      whiteSpace: 'nowrap',
-    }}
-  >
-    <button
-      onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
-      onClick={() => applyFormat('bold')}
-      style={{ width: 24, height: 24, border: 'none', borderRadius: 3, background: '#334155', color: '#fff', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}
-    >B</button>
-    <button
-      onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
-      onClick={() => applyFormat('italic')}
-      style={{ width: 24, height: 24, border: 'none', borderRadius: 3, background: '#334155', color: '#fff', fontStyle: 'italic', fontSize: 12, cursor: 'pointer' }}
-    >I</button>
-    <button
-      onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
-      onClick={() => applyFormat('underline')}
-      style={{ width: 24, height: 24, border: 'none', borderRadius: 3, background: '#334155', color: '#fff', textDecoration: 'underline', fontSize: 12, cursor: 'pointer' }}
-    >U</button>
+        <div
+          onMouseDown={e => e.stopPropagation()}
+          onTouchStart={e => e.stopPropagation()}
+          style={{
+            position: 'absolute', top: -34, left: 0,
+            display: 'flex', alignItems: 'center', gap: 4,
+            background: '#1e293b', borderRadius: 6, padding: '4px 6px',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <button
+            onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
+            onClick={() => applyFormat('bold')}
+            style={{ width: 24, height: 24, border: 'none', borderRadius: 3, background: '#334155', color: '#fff', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}
+          >B</button>
+          <button
+            onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
+            onClick={() => applyFormat('italic')}
+            style={{ width: 24, height: 24, border: 'none', borderRadius: 3, background: '#334155', color: '#fff', fontStyle: 'italic', fontSize: 12, cursor: 'pointer' }}
+          >I</button>
+          <button
+            onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
+            onClick={() => applyFormat('underline')}
+            style={{ width: 24, height: 24, border: 'none', borderRadius: 3, background: '#334155', color: '#fff', textDecoration: 'underline', fontSize: 12, cursor: 'pointer' }}
+          >U</button>
 
+          {/* FIX #2: butonul H acum e un toggle real */}
+          <button
+            onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
+            onClick={toggleHighlight}
+            title="Highlight"
+            style={{
+              width: 24, height: 24, border: 'none', borderRadius: 3,
+              background: highlighted ? (highlightColor || '#fef08a') : '#334155',
+              color: highlighted ? '#713f12' : '#fff',
+              fontWeight: 700, fontSize: 11, cursor: 'pointer',
+            }}
+          >H</button>
 
+          <input
+            type="color"
+            value={highlightColor}
+            onMouseDown={e => e.stopPropagation()}
+            onChange={e => handleHighlightColorChange(e.target.value)}
+            title="Culoare highlight"
+            style={{ width: 20, height: 24, border: 'none', padding: 0, borderRadius: 3, background: 'none' }}
+          />
 
-<button
-  onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
-  onClick={() => applyHighlight(highlightColor)}
-  title="Highlight"
-  style={{ width: 24, height: 24, border: 'none', borderRadius: 3, background: highlightColor, color: '#713f12', fontWeight: 700, fontSize: 11, cursor: 'pointer' }}
->H</button>
+          <select
+            value={fontSize}
+            onChange={e => {
+              const size = Number(e.target.value)
+              setFontSize(size) // ramane ca marime implicita pt text nou, la cursor fara selectie
+              applyFontSize(size) // aplica pe selectie, daca exista text selectat
+            }}
+            style={{ height: 24, fontSize: 12, borderRadius: 3, border: 'none', background: '#334155', color: '#fff' }}
+          >
+            {[8,9,10,11,12,14,16,18,20,24,28,32].map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
 
-<input
-  type="color"
-  value={highlightColor}
-  onMouseDown={e => e.stopPropagation()}
-  onChange={e => {
-    setHighlightColor(e.target.value)
-    applyHighlight(e.target.value)
-  }}
-  title="Culoare highlight"
-  style={{ width: 20, height: 24, border: 'none', padding: 0, borderRadius: 3, background: 'none' }}
-/>
+          <input
+            type="color"
+            value={color}
+            onMouseDown={e => e.stopPropagation()}
+            onChange={e => {
+              setColor(e.target.value)
+              spanRef.current?.focus()
+              document.execCommand('foreColor', false, e.target.value)
+            }}
+            style={{ width: 24, height: 24, border: 'none', padding: 0, borderRadius: 3, background: 'none' }}
+          />
 
-
-
-
-
-    <select
-      value={fontSize}
-      onChange={e => setFontSize(Number(e.target.value))}
-      style={{ height: 24, fontSize: 12, borderRadius: 3, border: 'none', background: '#334155', color: '#fff' }}
-    >
-      {[8,9,10,11,12,14,16,18,20,24,28,32].map(s => <option key={s} value={s}>{s}</option>)}
-    </select>
-
-    <input
-      type="color"
-      value={color}
-      onMouseDown={e => e.stopPropagation()}
-      onChange={e => {
-        setColor(e.target.value)
-        spanRef.current?.focus()
-        document.execCommand('foreColor', false, e.target.value)
-      }}
-      style={{ width: 24, height: 24, border: 'none', padding: 0, borderRadius: 3, background: 'none' }}
-    />
-
-    <button onClick={onRemove}
-      style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer', fontSize: 14, lineHeight: 1, padding: '0 4px' }}>✕</button>
-  </div>
-)}
+          <button onClick={onRemove}
+            style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer', fontSize: 14, lineHeight: 1, padding: '0 4px' }}>✕</button>
+        </div>
+      )}
 
       <span
         ref={spanRef}
@@ -465,12 +533,32 @@ function FreeTextInline({ id, x, y, pageRef, onRemove, onCommitPosition }) {
           borderRadius: 2,
           padding: '0 2px',
         }}
-      >
-        {text}
-      </span>
+       
+      />
+
+      {/* NOU: manerul de resize, la fel ca la FloatingImage — vizibil doar cand nu editezi */}
+      {!editing && selected && (
+        <div
+          className="no-print"
+          onPointerDown={onResizePointerDown}
+          onTouchStart={onResizePointerDown}
+          style={{
+            position: 'absolute',
+            right: -8,
+            bottom: -8,
+            width: 12,
+            height: 12,
+            background: '#6366f1',
+            borderRadius: '50%',
+            cursor: 'nwse-resize',
+            zIndex: 25,
+          }}
+        />
+      )}
     </div>
   )
 }
+
 
 
 
