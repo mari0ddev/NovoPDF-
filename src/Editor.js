@@ -256,10 +256,9 @@ const Sep = () => (
   <div style={{ width: 1, height: 26, background: '#e2e8f0', margin: '0 6px', flexShrink: 0 }} />
 )
 
-/* ---- FREE TEXT INLINE ---- */
 
-
-
+/* ---- FREE TEXT BOX ---- */
+/* ---- FREE TEXT BOX ---- */
 
 function FreeTextInline({ id, x, y, pageRef, onRemove, onCommitPosition }) {
   const [text, setText] = useState('')
@@ -590,7 +589,7 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
   e.preventDefault()
   e.stopPropagation()
 
-  setHovered(true)   
+
 
   const pageRect = pageRef?.current?.getBoundingClientRect()
   if (!pageRect) return
@@ -661,7 +660,7 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
     }
   }, [resizing, id, size, onCommitSize])
 
-  const showControls = true || hovered || dragging || resizing
+
 
   return (
     <div
@@ -684,7 +683,9 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
       {showControls && (
         <button
           className="no-print"
-          onPointerDown={(e) => e.stopPropagation()}
+          onMouseDown={(e) => { e.preventDefault(); e.stopPropagation()
+      }}
+
           onMouseEnter={handleMouseEnter}
           onClick={onRemove}
           style={{
