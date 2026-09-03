@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
-
+import './Contact.js'
+import './About.js'
+import Footer from './Footer';
 function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -15,9 +17,10 @@ function LandingPage() {
 
         <nav>
           <ul className={`nav-links ${menuOpen ? 'nav-active' : ''}`}>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#reviews">Reviews</a></li>
+  
+            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/about">About</Link></li>
+        
           </ul>
         </nav>
 
@@ -30,20 +33,13 @@ function LandingPage() {
       <section className="hero">
         <div className="hero-text">
           <p className="hero-subtitle">NovoPDF</p>
-          <p className="hero-text-big">
-            Transform the way you work with PDFs<br />
-            all in one place, free and easy.
-          </p>
+         <p className="hero-text-big">
+  Transform the way you work with PDFs<br />
+  <span>all in one place, free and easy.</span>
+</p>
           <h3>Save time, work quickly, and deliver professional documents.</h3>
 
-          <a
-            href="https://calendly.com/mariodumidesign/30min"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cta-btn"
-          >
-            Log In
-          </a>
+         
           <Link to="/editor" className="cta-btn">
             Start
           </Link>
@@ -111,6 +107,7 @@ function LandingPage() {
           Everything is completely free, without limitations, directly in your browser.
         </small>
       </section>
+          <Footer />
     </>
   );
 }
