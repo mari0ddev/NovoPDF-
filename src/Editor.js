@@ -14,6 +14,7 @@ import { HexColorPicker } from 'react-colorful'
 import { CustomImage } from './ImageExtension'
 import { Indent } from './IndentExtension'
 
+
 import { TableKit } from '@tiptap/extension-table'
 
 import 'react-pdf/dist/Page/AnnotationLayer.css'
@@ -673,14 +674,14 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
         top: pos.y,
         zIndex: 20,
         cursor: dragging ? "grabbing" : "grab",
-        outline: showControls ? "1px dashed rgba(99,102,241,0.5)" : "none",
+        outline: hovered ? "1px dashed rgba(99,102,241,0.5)" : "none",
         outlineOffset: 2,
         padding: 10,
         margin: -10,
         touchAction: "none",
       }}
     >
-      {showControls && (
+      {hovered && (
         <button
           className="no-print"
           onMouseDown={(e) => { e.preventDefault(); e.stopPropagation()
@@ -720,7 +721,7 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
         }}
       />
 
-      {showControls && (
+      {hovered && (
         <div
           className="no-print"
           onPointerDown={onResizePointerDown}
