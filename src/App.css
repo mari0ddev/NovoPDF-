@@ -267,7 +267,7 @@ header {
     left: -100%;
     height: calc(100vh - 90px);
     width: 100%;
-    background: white;
+       background: linear-gradient(135deg, #DCE8FF, #b8d0ff, #a0bcff);
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
