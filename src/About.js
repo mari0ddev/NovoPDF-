@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 
 function About() {
- const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -26,7 +26,6 @@ function About() {
     ).forEach(el => observer.observe(el))
 
     return () => observer.disconnect()
-    
   }, [])
 
 

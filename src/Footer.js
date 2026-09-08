@@ -17,7 +17,7 @@ function Footer() {
       fontFamily: "Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;",
     }}>
       <div>
-        <img src="/novopdf logo.png" alt="NovoPDF" style={{ width: 100, marginBottom: 8 }} />
+        <img src="/novopdf logo.png" alt="NovoPDF" className="footer-logo" style={{ width: 100, marginBottom: 8 }} />
         <p style={{ margin: 0, fontSize: 13 ,color: '#2c2f32' }}>© 2026 NovoPDF. All rights reserved.</p>
       </div>
 

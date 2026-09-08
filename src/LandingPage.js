@@ -39,14 +39,7 @@ function LandingPage() {
 </p>
           <h3>Save time, work quickly, and deliver professional documents.</h3>
 
-          <a
-            href="https://calendly.com/mariodumidesign/30min"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cta-btn"
-          >
-            Log In
-          </a>
+         
           <Link to="/editor" className="cta-btn">
             Start
           </Link>
@@ -62,9 +55,9 @@ function LandingPage() {
         <div className="hero-text-1">
           <p className="hero-subtitle-1">About us</p>
           <p className="hero-text-big-1">
-           NovoPDF is a free, browser-based PDF tool built to simplify document editing and make your life easier.<br />
+           NovoPDF is a free, browser based PDF tool built to simplify document editing and make your life easier.<br />
             Create new PDFs, edit existing files, add digital signatures, and convert documents<br />
-            nto multiple formats all in one place, without installing any software.
+            into multiple formats all in one place, without installing any software.
           </p>
           <h3 className="hero-desc-1">
             Fast, intuitive, and secure, NovoPDF lets you focus on your work, not the tools.
@@ -83,7 +76,7 @@ function LandingPage() {
         <div className="content">
           <div className="help-left">
             <h1>
-              Work with your PDFs faster and easier using a clean, browser-based workspace designed for simplicity and privacy.
+              Work with your PDFs faster and easier using a clean, browser based workspace designed for simplicity and privacy.
               <br />No learning curve, no hidden steps. Just open, edit, and done  exactly how it should be.
               
             </h1>
