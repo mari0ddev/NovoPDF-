@@ -6,7 +6,7 @@ import Underline from '@tiptap/extension-underline'
 import { TextStyle } from '@tiptap/extension-text-style'
 import Color from '@tiptap/extension-color'
 import Highlight from '@tiptap/extension-highlight'
-import { CustomImage } from './ImageExtension'
+import Image from '@tiptap/extension-image'
 
 const BRAND_COLORS = ['#1e293b', '#6366f1', '#8b5cf6', '#dc2626', '#16a34a', '#f59e0b']
 
@@ -94,7 +94,7 @@ export default function MiniEditorPreview() {
 
   useEffect(() => {
     const editor = new Editor({
-      extensions: [StarterKit, Underline, TextStyle, Color, Highlight, CustomImage],
+      extensions: [StarterKit, Underline, TextStyle, Color, Highlight, Image],
       content: '<p>Scrie aici ceva, selecteaza textul si incearcă butoanele de sus.</p>',
       onTransaction: () => forceUpdate(n => n + 1),
     })
