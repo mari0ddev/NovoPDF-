@@ -1444,9 +1444,9 @@ useEffect(() => {
           <input type="file" hidden ref={imgInputRef} accept="image/*" onChange={addImage} />
 
           {/* Semnătură */}
-          <TBtn onClick={() => setShowSignatureModal(true)} title="Adaugă semnătură" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: '#fff' }}>
+          <TBtn onClick={() => setShowSignatureModal(true)} title="Adauga semnatura" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: '#fff' }}>
             <Icon d={icons.signature} />
-            <span style={{ fontSize: 11 }}>Semnătură</span>
+            <span style={{ fontSize: 11 }}>Semnatura</span>
           </TBtn>
 {/* Tabel */}
 {/* Tabel */}
