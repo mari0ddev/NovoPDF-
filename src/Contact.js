@@ -264,7 +264,7 @@ function Contact() {
             <ul className={`nav-links ${menuOpen ? 'nav-active' : ''}`}>
               <li><Link to="/contact">Contact</Link></li>
               <li><Link to="/about">About</Link></li>
-              <li><a href="#reviews">Reviews</a></li>
+            
             </ul>
           </nav>
           <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
