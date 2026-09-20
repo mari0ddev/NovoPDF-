@@ -1589,10 +1589,14 @@ footer {
 }
 
 .mini-editor-page .ProseMirror img {
+  max-width: 160px;
+  display: block;
+  margin-top: 8px;
   -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
+  -webkit-user-modify: read-only;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: auto;
 }
 .mini-editor-page .ProseMirror-selectednode {
   outline: none !important;
@@ -1605,3 +1609,5 @@ footer {
   -webkit-user-select: none;
   user-select: none;
 }
+
+

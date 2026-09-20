@@ -231,6 +231,7 @@ function TBtn({ onClick, title, active, children, style = {} }) {
   return (
     <button
       onClick={onClick}
+      onMouseDown={(e) => e.preventDefault()}
       title={title}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -916,7 +917,7 @@ function placeCaretAtPoint(editor, clientX, clientY) {
 }
 
 /* ---- PAGE OVERLAY ---- */
-function PageOverlay({ editor, pageIndex, activePage, setActivePage, children, onPageClick, freeTextMode, pdfSource }) {
+function PageOverlay({ editor, pageIndex, activePage, setActivePage, children, onPageClick, freeTextMode, pdfSource, disabled }) {
   const allowDirectType = pdfSource === 'blank'
   const handleClick = (e) => {
     if (e.target.closest('.ProseMirror')) return
@@ -930,12 +931,18 @@ function PageOverlay({ editor, pageIndex, activePage, setActivePage, children, o
     requestAnimationFrame(() => { try { placeCaretAtPoint(editor, e.clientX, e.clientY) } catch (_) { editor.commands.focus('end') } })
   }
   return (
-    <div style={{ position: 'absolute', inset: 0, padding: '40px 50px', zIndex: 3, pointerEvents: 'auto', cursor: freeTextMode ? 'crosshair' : allowDirectType ? 'text' : 'default' }} onClick={handleClick}>
+    <div
+      style={{
+        position: 'absolute', inset: 0, padding: '40px 50px', zIndex: 3,
+        pointerEvents: disabled ? 'none' : 'auto',   // <-- linia cheie
+        cursor: freeTextMode ? 'crosshair' : allowDirectType ? 'text' : 'default',
+      }}
+      onClick={handleClick}
+    >
       {children}
     </div>
   )
 }
-
 /* ============================================================
    MAIN COMPONENT
 ============================================================ */
@@ -954,7 +961,7 @@ export default function EditorPDF() {
 const [floatingImages, setFloatingImages] = useState([])
 const floatingImgCounter = useRef(0)
 const activeFreeTextSpanRef = useRef(null)
-
+const [editExistingMode, setEditExistingMode] = useState(false)
 
 
 const skipHeightCheck = useRef(false)
@@ -1072,15 +1079,475 @@ useEffect(() => {
   }, [activeEditor, zoom, activePage])
 
 
-useEffect(() => {
-  if (!activeEditor) return
-  const sync = () => {
-    const node = activeEditor.state.selection.$from.node()
-    if (node?.type.name === 'paragraph') setIndentPx((node.attrs?.indent ?? 0) * zoom)
+  useEffect(() => {
+  if (!editExistingMode) {
+    activeFreeTextSpanRef.current = null
+    return
   }
-  activeEditor.on('selectionUpdate', sync); activeEditor.on('update', sync)
-  return () => { activeEditor.off('selectionUpdate', sync); activeEditor.off('update', sync) }
-}, [activeEditor, zoom, activePage])
+
+  const cleanups = []
+
+  for (let i = 0; i < numPages; i++) {
+    const pageEl = pageRefs.current[i]
+    if (!pageEl) continue
+
+    const textLayer = pageEl.querySelector('.react-pdf__Page__textContent')
+    if (!textLayer) continue
+
+    const onSpanClick = (e) => {
+      const span = e.target.closest('span')
+      if (!span || !textLayer.contains(span)) return
+
+      setActivePage(i)
+      activeFreeTextSpanRef.current = span
+
+      if (span.dataset.editing === 'true') {
+        span.focus()
+        return
+      }
+
+      span.dataset.originalStyle = span.getAttribute('style') || ''
+      span.dataset.originalText = span.textContent || ''
+
+      const rect = span.getBoundingClientRect()
+      const parentRect = textLayer.getBoundingClientRect()
+      const left = rect.left - parentRect.left
+      const top = rect.top - parentRect.top
+
+      span.dataset.originalLeft = `${left}px`
+      span.dataset.originalTop = `${top}px`
+
+        if (!span.dataset.coverId) {
+        const cover = document.createElement('div')
+
+        const coverId =
+          `pdf-cover-${Date.now()}-${Math.random()
+            .toString(36)
+            .slice(2)}`
+
+        cover.dataset.forSpan = coverId
+
+        // extindem coperta ca sa acopere si diacriticele (Ă, Â, Î) care ies deasupra randului
+        const EXTRA_TOP = 10
+        const EXTRA_SIDE = 4
+
+        Object.assign(cover.style, {
+          position: 'absolute',
+
+          left: `${left - EXTRA_SIDE}px`,
+          top: `${top - EXTRA_TOP}px`,
+
+          width: `${rect.width + EXTRA_SIDE * 2 + 10}px`,
+          height: `${rect.height + EXTRA_TOP + 6}px`,
+
+          backgroundColor: '#fff',
+
+          zIndex: '4',
+
+          pointerEvents: 'none',
+
+          boxSizing: 'border-box'
+        })
+
+        textLayer.appendChild(cover)
+
+        span.dataset.coverId = coverId
+      }
+
+      span.dataset.editing = 'true'
+      span.style.position = 'absolute'
+      span.style.left = `${left}px`
+      span.style.top = `${top}px`
+      span.style.transform = 'none'
+      span.style.whiteSpace = 'nowrap'
+      span.style.fontWeight = 'normal'
+      span.style.color = '#000'
+      span.style.background = '#fff'
+      span.style.zIndex = '5'
+      span.style.minWidth = '30px'
+      span.style.minHeight = '15px'
+      span.style.display = 'inline-block'
+      span.style.boxSizing = 'border-box'
+      span.style.padding = '2px 3px'
+      span.contentEditable = true
+      span.spellcheck = false
+
+      makePdfTextDraggable(span, textLayer)
+      span.focus()
+
+      const onKeyDown = (e) => { e.stopPropagation() }
+      document.addEventListener('keydown', onKeyDown, { capture: true })
+
+      const onBlur = () => {
+        span.contentEditable = false
+        span.dataset.editing = 'false'
+        document.removeEventListener('keydown', onKeyDown, { capture: true })
+        span.removeEventListener('blur', onBlur)
+
+        const changed = span.textContent !== span.dataset.originalText
+        const highlighted = span.dataset.highlighted === 'true'
+        const moved =
+          span.style.left !== span.dataset.originalLeft ||
+          span.style.top !== span.dataset.originalTop
+
+        if (!changed && !highlighted && !moved) {
+          span.setAttribute('style', span.dataset.originalStyle)
+          const cover = textLayer.querySelector(`[data-for-span="${span.dataset.coverId}"]`)
+          cover?.remove()
+          delete span.dataset.coverId
+        }
+      }
+
+      span.addEventListener('blur', onBlur)
+    }
+
+    textLayer.addEventListener('click', onSpanClick)
+    cleanups.push(() => { textLayer.removeEventListener('click', onSpanClick) })
+  }
+
+  return () => { cleanups.forEach((fn) => fn()) }
+}, [editExistingMode, numPages])
+
+useEffect(() => {
+  for (let i = 0; i < numPages; i++) {
+    const pageEl = pageRefs.current[i]
+    if (!pageEl) continue
+    const textLayer = pageEl.querySelector('.react-pdf__Page__textContent')
+    if (!textLayer) continue
+
+    const spans = textLayer.querySelectorAll('span')
+    spans.forEach(span => {
+      if (span.dataset.editing === 'true') return
+      if (editExistingMode) {
+        span.style.outline = '1px dashed rgba(99,102,241,0.5)'
+        span.style.pointerEvents = 'auto'
+        span.style.cursor = 'text'
+      } else {
+        span.style.outline = 'none'
+        span.style.pointerEvents = 'none'
+      }
+    })
+  }
+}, [editExistingMode, zoom, numPages])
+
+const applyToActiveTarget = (tiptapFn, execCmd = null, execValue = null) => {
+  if (editExistingMode && activeFreeTextSpanRef.current) {
+    const span = activeFreeTextSpanRef.current
+    span.contentEditable = true
+    span.dataset.editing = 'true'
+    span.focus()
+    if (execCmd) {
+      const range = document.createRange()
+      range.selectNodeContents(span)
+      const sel = window.getSelection()
+      sel.removeAllRanges()
+      sel.addRange(range)
+      document.execCommand(execCmd, false, execValue)
+    }
+  } else {
+    tiptapFn()
+  }
+}
+
+const applyStyleToActiveTarget = (tiptapFn, styleProp, styleValue) => {
+  if (editExistingMode && activeFreeTextSpanRef.current) {
+    activeFreeTextSpanRef.current.style[styleProp] = styleValue
+  } else {
+    tiptapFn()
+  }
+}
+
+const highlightActivePdfText = () => {
+  const span = activeFreeTextSpanRef.current
+  if (!span) return
+
+  const isHighlighted = span.dataset.highlighted === 'true'
+  if (isHighlighted) {
+    span.style.backgroundColor = '#fff'
+    span.style.color = '#000'
+    span.dataset.highlighted = 'false'
+  } else {
+    span.style.backgroundColor = '#fef08a'
+    span.style.color = '#000'
+    span.dataset.highlighted = 'true'
+  }
+}
+
+const alignPdfText = (alignment) => {
+  const span = activeFreeTextSpanRef.current
+  if (!span) return
+
+  const textLayer = span.closest('.react-pdf__Page__textContent')
+  if (!textLayer) return
+
+  const parentRect = textLayer.getBoundingClientRect()
+  const spanRect = span.getBoundingClientRect()
+  const currentTop = parseFloat(span.style.top) || (spanRect.top - parentRect.top)
+
+  let left = 0
+  if (alignment === 'left') left = 0
+  if (alignment === 'center') left = (parentRect.width - spanRect.width) / 2
+  if (alignment === 'right') left = parentRect.width - spanRect.width
+
+  span.style.left = `${left}px`
+  span.style.top = `${currentTop}px`
+}
+
+const makePdfTextDraggable = (span, textLayer) => {
+  if (span.dataset.dragInitialized === 'true') return
+  span.dataset.dragInitialized = 'true'
+
+  let dragging = false
+  let resizing = false
+  let startX = 0
+  let startY = 0
+  let startLeft = 0
+  let startTop = 0
+  let startWidth = 0
+  let startHeight = 0
+  let resizeDirection = ''
+
+  const handles = document.createElement('div')
+  handles.className = 'pdf-resize-handles'
+  Object.assign(handles.style, {
+    position: 'fixed',
+    display: 'none',
+    zIndex: '99999',
+    pointerEvents: 'none'
+  })
+  document.body.appendChild(handles)
+
+  const createHandle = (position, cursor) => {
+    const handle = document.createElement('div')
+    handle.className = `pdf-resize-handle ${position}`
+    Object.assign(handle.style, {
+      position: 'absolute',
+      width: '10px',
+      height: '10px',
+      borderRadius: '50%',
+      background: '#4f46e5',
+      border: '2px solid white',
+      boxSizing: 'border-box',
+      cursor,
+      pointerEvents: 'auto',
+      boxShadow: '0 1px 4px rgba(0,0,0,.25)'
+    })
+    handles.appendChild(handle)
+
+    handle.addEventListener('mousedown', (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      resizing = true
+      resizeDirection = position
+      startX = e.clientX
+      startY = e.clientY
+      const rect = span.getBoundingClientRect()
+      startLeft = parseFloat(span.style.left) || 0
+      startTop = parseFloat(span.style.top) || 0
+      startWidth = rect.width
+      startHeight = rect.height
+      document.body.style.userSelect = 'none'
+    })
+
+    return handle
+  }
+
+  createHandle('top-left', 'nwse-resize')
+  createHandle('top', 'ns-resize')
+  createHandle('top-right', 'nesw-resize')
+  createHandle('left', 'ew-resize')
+  createHandle('right', 'ew-resize')
+  createHandle('bottom-left', 'nesw-resize')
+  createHandle('bottom', 'ns-resize')
+  createHandle('bottom-right', 'nwse-resize')
+
+
+  const moveHandle = document.createElement('div')
+  moveHandle.className = 'pdf-move-handle'
+  Object.assign(moveHandle.style, {
+    position: 'absolute',
+    width: '22px',
+    height: '22px',
+    borderRadius: '6px',
+    background: '#6b21a8',
+    border: '2px solid white',
+    boxSizing: 'border-box',
+    cursor: 'move',
+    pointerEvents: 'auto',
+    boxShadow: '0 1px 4px rgba(0,0,0,.25)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#fff',
+    fontSize: '12px',
+  })
+  moveHandle.innerHTML = '✥'
+  handles.appendChild(moveHandle)
+
+  moveHandle.addEventListener('mousedown', (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    dragging = true
+    startX = e.clientX
+    startY = e.clientY
+    startLeft = parseFloat(span.style.left) || 0
+    startTop = parseFloat(span.style.top) || 0
+    span.style.cursor = 'grabbing'
+    document.body.style.userSelect = 'none'
+  })
+
+
+
+
+
+  const updateHandles = () => {
+    if (handles.style.display === 'none') return
+    const rect = span.getBoundingClientRect()
+    handles.style.left = `${rect.left}px`
+    handles.style.top = `${rect.top}px`
+    handles.style.width = `${rect.width}px`
+    handles.style.height = `${rect.height}px`
+
+    const setPosition = (selector, left, top) => {
+      const el = handles.querySelector(selector)
+      if (!el) return
+      el.style.left = `${left}px`
+      el.style.top = `${top}px`
+      el.style.transform = 'translate(-50%, -50%)'
+    }
+
+    setPosition('.top-left', 0, 0)
+    setPosition('.top', rect.width / 2, 0)
+    setPosition('.top-right', rect.width, 0)
+    setPosition('.left', 0, rect.height / 2)
+    setPosition('.right', rect.width, rect.height / 2)
+    setPosition('.bottom-left', 0, rect.height)
+    setPosition('.bottom', rect.width / 2, rect.height)
+     setPosition('.bottom-right', rect.width, rect.height)
+
+    moveHandle.style.left = `${rect.width / 2 - 11}px`
+    moveHandle.style.top = `-28px`
+  }
+
+  const showHandles = () => {
+    if (span.dataset.editing !== 'true') return
+    handles.style.display = 'block'
+    updateHandles()
+  }
+
+  const onMouseDown = (e) => {
+    if (e.button !== 0) return
+    if (span.dataset.editing !== 'true') return
+    if (e.target.closest('.pdf-resize-handle')) return
+    if (!e.altKey) return
+
+    dragging = true
+    startX = e.clientX
+    startY = e.clientY
+    startLeft = parseFloat(span.style.left) || 0
+    startTop = parseFloat(span.style.top) || 0
+    span.style.cursor = 'grabbing'
+    document.body.style.userSelect = 'none'
+
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  const onMouseMove = (e) => {
+    if (dragging) {
+      const dx = e.clientX - startX
+      const dy = e.clientY - startY
+      span.style.left = `${startLeft + dx}px`
+      span.style.top = `${startTop + dy}px`
+      updateHandles()
+      return
+    }
+
+    if (resizing) {
+      const dx = e.clientX - startX
+      const dy = e.clientY - startY
+      let newWidth = startWidth
+      let newHeight = startHeight
+      let newLeft = startLeft
+      let newTop = startTop
+      const minWidth = 30
+      const minHeight = 15
+
+      if (resizeDirection === 'left' || resizeDirection === 'top-left' || resizeDirection === 'bottom-left') {
+        newWidth = startWidth - dx
+        if (newWidth < minWidth) { newWidth = minWidth } else { newLeft = startLeft + dx }
+      }
+      if (resizeDirection === 'right' || resizeDirection === 'top-right' || resizeDirection === 'bottom-right') {
+        newWidth = Math.max(minWidth, startWidth + dx)
+      }
+      if (resizeDirection === 'top' || resizeDirection === 'top-left' || resizeDirection === 'top-right') {
+        newHeight = startHeight - dy
+        if (newHeight < minHeight) { newHeight = minHeight } else { newTop = startTop + dy }
+      }
+      if (resizeDirection === 'bottom' || resizeDirection === 'bottom-left' || resizeDirection === 'bottom-right') {
+        newHeight = Math.max(minHeight, startHeight + dy)
+      }
+
+      span.style.width = `${newWidth}px`
+      span.style.minWidth = `${newWidth}px`
+      span.style.height = `${newHeight}px`
+      span.style.minHeight = `${newHeight}px`
+      span.style.left = `${newLeft}px`
+      span.style.top = `${newTop}px`
+      updateHandles()
+    }
+  }
+
+  const onMouseUp = () => {
+    if (dragging) {
+      dragging = false
+      span.style.cursor = 'text'
+    }
+    if (resizing) {
+      resizing = false
+      resizeDirection = ''
+      document.body.style.userSelect = ''
+    }
+    updateHandles()
+  }
+ span.addEventListener('mousedown', onMouseDown)
+  document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseup', onMouseUp)
+  span.addEventListener('focus', showHandles)
+  span.addEventListener('click', () => {
+    if (span.dataset.editing === 'true') showHandles()
+  })
+
+
+
+  const hideHandles = () => {
+  handles.style.display = 'none'
+  }
+
+  const onScroll = () => {
+    hideHandles()
+  }
+
+  document.addEventListener('scroll', onScroll, { capture: true, passive: true })
+  span.addEventListener('blur', hideHandles)
+
+
+  return () => {
+    span.removeEventListener('mousedown', onMouseDown)
+    document.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', onMouseUp)
+    span.removeEventListener('focus', showHandles)
+     document.removeEventListener('scroll', onScroll, { capture: true })
+    span.removeEventListener('blur', hideHandles)
+
+    if (handles.parentNode) { handles.parentNode.removeChild(handles) }
+    document.body.style.userSelect = ''
+    delete span.dataset.dragInitialized
+  }
+}
+
+
 
 const [, forceUpdate] = useState(0)
 useEffect(() => {
@@ -1194,7 +1661,7 @@ useEffect(() => {
     } finally { setIsSaving(false) }
   }
 
- /* ---- LANDING ---- */
+   /* ---- LANDING ---- */
   if (!pdfFile) {
     return (
       <>
@@ -1237,7 +1704,11 @@ useEffect(() => {
         .ProseMirror h1 { font-size: 2rem; font-weight: 700; margin: 16px 0 8px; color: #0f172a; line-height: 1.2; }
         .ProseMirror h2 { font-size: 1.5rem; font-weight: 600; margin: 14px 0 6px; color: #1e293b; line-height: 1.3; }
         .ProseMirror h3 { font-size: 1.2rem; font-weight: 600; margin: 12px 0 4px; color: #334155; line-height: 1.4; }
-      `}</style>
+      `} </style>
+
+      
+  
+ 
 
       <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: "'Segoe UI', sans-serif", background: 'linear-gradient(135deg, #DCE8FF, #b8d0ff, #a0bcff)' }}>
 
@@ -1269,67 +1740,97 @@ useEffect(() => {
           <Sep />
 
           {/* Format text */}
-          <TBtn onClick={() => activeEditor?.chain().focus().toggleBold().run()} title="Bold (Ctrl+B)">
-            <Icon d={icons.bold} size={17} />
-          </TBtn>
-          <TBtn onClick={() => activeEditor?.chain().focus().toggleItalic().run()} title="Italic (Ctrl+I)">
-            <Icon d={icons.italic} size={17} />
-          </TBtn>
-          <TBtn onClick={() => activeEditor?.chain().focus().toggleUnderline().run()} title="Underline (Ctrl+U)">
-            <Icon d={icons.underline} size={17} />
-          </TBtn>
-
+ <TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleBold().run(), 'bold')} title="Bold (Ctrl+B)">
+  <Icon d={icons.bold} size={17} />
+</TBtn>
+<TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleItalic().run(), 'italic')} title="Italic (Ctrl+I)">
+  <Icon d={icons.italic} size={17} />
+</TBtn>
+<TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleUnderline().run(), 'underline')} title="Underline (Ctrl+U)">
+  <Icon d={icons.underline} size={17} />
+</TBtn>
+            
 
 
           <Sep />
 
           {/* Font */}
-          <select onChange={(e) => activeEditor?.chain().focus().setFontFamily(e.target.value).run()}
-            style={{ height: 34, borderRadius: 7, border: '1px solid #e2e8f0', padding: '0 8px', fontSize: 13, background: '#f8fafc', color: '#374151', cursor: 'pointer' }}>
-            <option value="Arial">Arial</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Courier New">Courier New</option>
-            <option value="Georgia">Georgia</option>
-          </select>
+          <select onChange={(e) => applyStyleToActiveTarget(() => activeEditor?.chain().focus().setFontFamily(e.target.value).run(), 'fontFamily', e.target.value)}
+  style={{ height: 34, borderRadius: 7, border: '1px solid #e2e8f0', padding: '0 8px', fontSize: 13, background: '#f8fafc', color: '#374151', cursor: 'pointer' }}>
+  <option value="Arial">Arial</option>
+  <option value="Times New Roman">Times New Roman</option>
+  <option value="Courier New">Courier New</option>
+  <option value="Georgia">Georgia</option>
+</select>
 
-          {/* Font size */}
-<select onChange={(e) => {
-    if (activeFreeTextSpanRef.current) {
-      document.execCommand('fontSize', false, '7') // 7 = placeholder, vezi nota de mai jos
-      // trick: fontSize din execCommand acceptă doar 1-7, nu px direct
+{/* Font size */}
+<select onChange={(e) => applyStyleToActiveTarget(() => activeEditor?.chain().focus().setFontSize(e.target.value).run(), 'fontSize', e.target.value + 'px')}
+  style={{ height: 34, width: 60, borderRadius: 7, border: '1px solid #e2e8f0', padding: '0 4px', fontSize: 13, background: '#f8fafc', color: '#374151', cursor: 'pointer' }}
+  defaultValue="16">
+  {[8,9,10,11,12,14,16,18,20,24,28,32,36,48,64,72].map(s => <option key={s} value={s}>{s}</option>)}
+</select>
+
+          <Sep />
+{/* Liste */}
+<TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleBulletList().run(), 'insertUnorderedList')} title="Bullet list" style={editExistingMode ? { opacity: 0.3, pointerEvents: 'none' } : {}}>
+  <Icon d={icons.bulletList} />
+</TBtn>
+<TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleOrderedList().run(), 'insertOrderedList')} title="Numbered list" style={editExistingMode ? { opacity: 0.3, pointerEvents: 'none' } : {}}>
+  <Icon d={icons.orderedList} />
+</TBtn>
+
+<Sep />
+
+
+
+{/* Aliniere */}
+<TBtn
+  onClick={() => {
+    if (editExistingMode) {
+      alignPdfText('left')
     } else {
-      activeEditor?.chain().focus().setFontSize(e.target.value).run()
+      applyToActiveTarget(() =>
+        activeEditor?.chain().focus().setTextAlign('left').run(),
+        'justifyLeft'
+      )
     }
   }}
+  title="Aliniere stânga"
+>
+  <Icon d={icons.alignLeft} />
+</TBtn>
 
+<TBtn
+  onClick={() => {
+    if (editExistingMode) {
+      alignPdfText('center')
+    } else {
+      applyToActiveTarget(() =>
+        activeEditor?.chain().focus().setTextAlign('center').run(),
+        'justifyCenter'
+      )
+    }
+  }}
+  title="Aliniere centru"
+>
+  <Icon d={icons.alignCenter} />
+</TBtn>
 
-            style={{ height: 34, width: 60, borderRadius: 7, border: '1px solid #e2e8f0', padding: '0 4px', fontSize: 13, background: '#f8fafc', color: '#374151', cursor: 'pointer' }}
-            defaultValue="16">
-            {[8,9,10,11,12,14,16,18,20,24,28,32,36,48,64,72].map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
-
-          <Sep />
-
-          {/* Liste */}
-          <TBtn onClick={() => activeEditor?.chain().focus().toggleBulletList().run()} title="Bullet list">
-            <Icon d={icons.bulletList} />
-          </TBtn>
-          <TBtn onClick={() => activeEditor?.chain().focus().toggleOrderedList().run()} title="Numbered list">
-            <Icon d={icons.orderedList} />
-          </TBtn>
-
-          <Sep />
-
-          {/* Aliniere */}
-          <TBtn onClick={() => activeEditor?.chain().focus().setTextAlign('left').run()} title="Aliniere stânga">
-            <Icon d={icons.alignLeft} />
-          </TBtn>
-          <TBtn onClick={() => activeEditor?.chain().focus().setTextAlign('center').run()} title="Aliniere centru">
-            <Icon d={icons.alignCenter} />
-          </TBtn>
-          <TBtn onClick={() => activeEditor?.chain().focus().setTextAlign('right').run()} title="Aliniere dreapta">
-            <Icon d={icons.alignRight} />
-          </TBtn>
+<TBtn
+  onClick={() => {
+    if (editExistingMode) {
+      alignPdfText('right')
+    } else {
+      applyToActiveTarget(() =>
+        activeEditor?.chain().focus().setTextAlign('right').run(),
+        'justifyRight'
+      )
+    }
+  }}
+  title="Aliniere dreapta"
+>
+  <Icon d={icons.alignRight} />
+</TBtn>
 
           <Sep />
 
@@ -1389,18 +1890,15 @@ useEffect(() => {
       }}
     >
 
-     <HexColorPicker
+    
+
+<HexColorPicker
   color={selectedColor}
   onChange={(color) => {
     setSelectedColor(color)
-    if (activeFreeTextSpanRef.current) {
-      document.execCommand('foreColor', false, color)
-    } else {
-      activeEditor?.chain().focus().setColor(color).run()
-    }
+    applyToActiveTarget(() => activeEditor?.chain().focus().setColor(color).run(), 'foreColor', color)
   }}
 />
-
       <input
        value={selectedColor}
   onChange={(e) => {
@@ -1428,26 +1926,34 @@ useEffect(() => {
 
 </div>
        
-
-          <TBtn onClick={() => activeEditor?.chain().focus().toggleHighlight().run()} title="Highlight" style={{ background: '#fef9c3', color: '#713f12' }}>
-            <Icon d={icons.highlight} size={14} />
-            <span style={{ fontSize: 11 }}>Mark</span>
-          </TBtn>
-
+<TBtn
+  onClick={highlightActivePdfText}
+  title="Highlight"
+  style={{
+    background: '#fef9c3',
+    color: '#713f12'
+  }}
+>
+  <Icon d={icons.highlight} size={14} />
+  <span style={{ fontSize: 11 }}>Mark</span>
+</TBtn>
           <Sep />
-
+            
           {/* Imagine */}
           <TBtn onClick={() => imgInputRef.current.click()} title="Inserează imagine">
             <Icon d={icons.image} />
             <span style={{ fontSize: 11 }}>Image</span>
           </TBtn>
           <input type="file" hidden ref={imgInputRef} accept="image/*" onChange={addImage} />
-
+      
           {/* Semnătură */}
           <TBtn onClick={() => setShowSignatureModal(true)} title="Adauga semnatura" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: '#fff' }}>
             <Icon d={icons.signature} />
             <span style={{ fontSize: 11 }}>Semnatura</span>
           </TBtn>
+          <TBtn onClick={() => setEditExistingMode(m => !m)} title="Editează text existent" active={editExistingMode}>
+  <span style={{ fontSize: 11 }}>Edit Text{editExistingMode ? ' ✓' : ''}</span>
+</TBtn>
 {/* Tabel */}
 {/* Tabel */}
 <TableGridPicker activeEditor={activeEditor} />
@@ -1476,9 +1982,9 @@ useEffect(() => {
 
           <Sep />
 
-<TBtn onClick={() => setFreeTextMode(m => !m)} title="Text liber — click pe pagină" active={freeTextMode}>
+<TBtn onClick={() => setFreeTextMode(m => !m)} title="Free text press on the page" active={freeTextMode}>
   <Icon d={icons.textFree} />
-  <span style={{ fontSize: 11 }}>Text Liber{freeTextMode ? ' ✓' : ''}</span>
+  <span style={{ fontSize: 11 }}>Free Text{freeTextMode ? ' ✓' : ''}</span>
 </TBtn>
 
 
@@ -1555,9 +2061,9 @@ useEffect(() => {
                 {Array.from({ length: numPages }).map((_, i) => (
                   <div key={i} ref={el => pageRefs.current[i] = el}
                     style={{ position: 'relative', width: PAGE_WIDTH, minHeight: PAGE_HEIGHT, background: '#fff', marginBottom: i < numPages - 1 ? PAGE_GAP : 0, boxShadow: activePage === i ? '0 0 0 3px #6366f1, 0 8px 40px rgba(99,102,241,0.25)' : '0 4px 24px rgba(0,0,0,0.18)', borderRadius: 4, overflow: 'hidden', cursor: freeTextMode ? 'crosshair' : 'text', flexShrink: 0 }}>
-                    <div style={{ pointerEvents: 'none' }}>
-                      <Page pageNumber={i + 1} scale={zoom} renderAnnotationLayer={false} />
-                    </div>
+                   <div className={editExistingMode ? 'edit-existing-active' : ''} style={{ pointerEvents: 'none' }}>
+  <Page pageNumber={i + 1} scale={zoom} renderAnnotationLayer={false} />
+</div>
                     {freeTextBoxes.filter(b => b.pageIndex === i).map(box => (
 <FreeTextInline
   key={box.id}
@@ -1593,7 +2099,7 @@ useEffect(() => {
 ))}
 
 
-  <PageOverlay
+<PageOverlay
   editor={editorsRef.current[i]}
   pageIndex={i}
   activePage={activePage}
@@ -1601,6 +2107,7 @@ useEffect(() => {
   onPageClick={(rx, ry, cx, cy) => handlePageClick(rx, ry, cx, cy, i)}
   freeTextMode={freeTextMode}
   pdfSource={pdfSource}
+  disabled={editExistingMode}   // <-- linia noua
 >
   {editorsRef.current[i] && <EditorContent editor={editorsRef.current[i]} style={{ minHeight: '100%', outline: 'none' }} />}
 </PageOverlay>
@@ -1623,4 +2130,6 @@ useEffect(() => {
     </>
   )
 }
+
+
 

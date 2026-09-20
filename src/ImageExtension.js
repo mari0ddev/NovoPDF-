@@ -10,6 +10,7 @@ export const CustomImage = Image.extend({
       left: { default: 0 },
       top: { default: 0 },
       alt: { default: '' },
+      rotation: { default: 0 },
     }
   },
 
