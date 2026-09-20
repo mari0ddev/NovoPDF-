@@ -1126,9 +1126,9 @@ useEffect(() => {
             .slice(2)}`
 
         cover.dataset.forSpan = coverId
-
-        // extindem coperta ca sa acopere si diacriticele (Ă, Â, Î) care ies deasupra randului
-        const EXTRA_TOP = 10
+        // extindem coperta putin, doar cat sa acopere diacriticele (Ă, Â, Î), fara sa acopere randul de dedesubt
+        const EXTRA_TOP = 6
+        const EXTRA_BOTTOM = 2
         const EXTRA_SIDE = 4
 
         Object.assign(cover.style, {
@@ -1138,7 +1138,7 @@ useEffect(() => {
           top: `${top - EXTRA_TOP}px`,
 
           width: `${rect.width + EXTRA_SIDE * 2 + 10}px`,
-          height: `${rect.height + EXTRA_TOP + 6}px`,
+          height: `${rect.height + EXTRA_TOP + EXTRA_BOTTOM}px`,
 
           backgroundColor: '#fff',
 
@@ -1172,6 +1172,7 @@ useEffect(() => {
       span.contentEditable = true
       span.spellcheck = false
 
+  
       makePdfTextDraggable(span, textLayer)
       span.focus()
 
@@ -1306,6 +1307,21 @@ const makePdfTextDraggable = (span, textLayer) => {
   let startWidth = 0
   let startHeight = 0
   let resizeDirection = ''
+  const onViewportChange = () => {
+    if (handles.style.display !== 'none') {
+      updateHandles()
+    }
+  }
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', onViewportChange)
+    window.visualViewport.addEventListener('scroll', onViewportChange)
+  }
+
+  window.addEventListener('resize', onViewportChange)
+  window.addEventListener('orientationchange', onViewportChange)
+
+ 
 
   const handles = document.createElement('div')
   handles.className = 'pdf-resize-handles'
@@ -1334,7 +1350,9 @@ const makePdfTextDraggable = (span, textLayer) => {
     })
     handles.appendChild(handle)
 
-    handle.addEventListener('mousedown', (e) => {
+        handle.style.touchAction = 'none'
+
+    handle.addEventListener('pointerdown', (e) => {
       e.preventDefault()
       e.stopPropagation()
       resizing = true
@@ -1347,6 +1365,8 @@ const makePdfTextDraggable = (span, textLayer) => {
       startWidth = rect.width
       startHeight = rect.height
       document.body.style.userSelect = 'none'
+
+      handle.setPointerCapture(e.pointerId)
     })
 
     return handle
@@ -1384,7 +1404,9 @@ const makePdfTextDraggable = (span, textLayer) => {
   moveHandle.innerHTML = '✥'
   handles.appendChild(moveHandle)
 
-  moveHandle.addEventListener('mousedown', (e) => {
+  moveHandle.style.touchAction = 'none'
+
+  moveHandle.addEventListener('pointerdown', (e) => {
     e.preventDefault()
     e.stopPropagation()
 
@@ -1395,6 +1417,8 @@ const makePdfTextDraggable = (span, textLayer) => {
     startTop = parseFloat(span.style.top) || 0
     span.style.cursor = 'grabbing'
     document.body.style.userSelect = 'none'
+
+    moveHandle.setPointerCapture(e.pointerId)
   })
 
 
@@ -1430,11 +1454,25 @@ const makePdfTextDraggable = (span, textLayer) => {
     moveHandle.style.top = `-28px`
   }
 
+    let repositionInterval = null
+
   const showHandles = () => {
     if (span.dataset.editing !== 'true') return
     handles.style.display = 'block'
     updateHandles()
+
+    // repozitioneaza continuu cat timp editezi, ca sa prinda si animatia tastaturii pe iOS
+    if (repositionInterval) clearInterval(repositionInterval)
+    repositionInterval = setInterval(() => {
+      if (span.dataset.editing === 'true' && handles.style.display !== 'none') {
+        updateHandles()
+      } else {
+        clearInterval(repositionInterval)
+        repositionInterval = null
+      }
+    }, 100)
   }
+  
 
   const onMouseDown = (e) => {
     if (e.button !== 0) return
@@ -1511,9 +1549,9 @@ const makePdfTextDraggable = (span, textLayer) => {
     }
     updateHandles()
   }
- span.addEventListener('mousedown', onMouseDown)
-  document.addEventListener('mousemove', onMouseMove)
-  document.addEventListener('mouseup', onMouseUp)
+  span.addEventListener('mousedown', onMouseDown)
+  document.addEventListener('pointermove', onMouseMove)
+  document.addEventListener('pointerup', onMouseUp)
   span.addEventListener('focus', showHandles)
   span.addEventListener('click', () => {
     if (span.dataset.editing === 'true') showHandles()
@@ -1533,18 +1571,29 @@ const makePdfTextDraggable = (span, textLayer) => {
   span.addEventListener('blur', hideHandles)
 
 
-  return () => {
+    return () => {
     span.removeEventListener('mousedown', onMouseDown)
-    document.removeEventListener('mousemove', onMouseMove)
-    document.removeEventListener('mouseup', onMouseUp)
+    document.removeEventListener('pointermove', onMouseMove)
+    document.removeEventListener('pointerup', onMouseUp)
     span.removeEventListener('focus', showHandles)
-     document.removeEventListener('scroll', onScroll, { capture: true })
+
+    document.removeEventListener('scroll', onScroll, { capture: true })
     span.removeEventListener('blur', hideHandles)
+
+    if (window.visualViewport) {
+      window.visualViewport.removeEventListener('resize', onViewportChange)
+      window.visualViewport.removeEventListener('scroll', onViewportChange)
+    }
+    window.removeEventListener('resize', onViewportChange)
+    window.removeEventListener('orientationchange', onViewportChange)
+
+    if (repositionInterval) clearInterval(repositionInterval)
 
     if (handles.parentNode) { handles.parentNode.removeChild(handles) }
     document.body.style.userSelect = ''
     delete span.dataset.dragInitialized
   }
+ 
 }
 
 
