@@ -1127,7 +1127,7 @@ useEffect(() => {
 
         cover.dataset.forSpan = coverId
         // extindem coperta putin, doar cat sa acopere diacriticele (Ă, Â, Î), fara sa acopere randul de dedesubt
-        const EXTRA_TOP = 6
+       const EXTRA_TOP = 6
         const EXTRA_BOTTOM = 2
         const EXTRA_SIDE = 4
 
