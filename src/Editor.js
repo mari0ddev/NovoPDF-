@@ -1131,22 +1131,22 @@ useEffect(() => {
         const EXTRA_BOTTOM = 2
         const EXTRA_SIDE = 4
 
-        Object.assign(cover.style, {
-          position: 'absolute',
+       Object.assign(cover.style, {
+  position: 'absolute',
 
-          left: `${left - EXTRA_SIDE}px`,
-          top: `${top - EXTRA_TOP}px`,
+  left: `${left - EXTRA_SIDE}px`,
+  top: `${top - EXTRA_TOP}px`,
 
-          width: `${rect.width + EXTRA_SIDE * 2 + 10}px`,
-          height: `${rect.height + EXTRA_TOP + EXTRA_BOTTOM}px`,
+  width: `${rect.width + EXTRA_SIDE * 2}px`,
+  height: `${rect.height + EXTRA_TOP + EXTRA_BOTTOM}px`,
 
-          backgroundColor: '#fff',
+  backgroundColor: '#fff',
 
-          zIndex: '4',
+  zIndex: '4',
 
-          pointerEvents: 'none',
+  pointerEvents: 'none',
 
-          boxSizing: 'border-box'
+  boxSizing: 'border-box'
         })
 
         textLayer.appendChild(cover)
