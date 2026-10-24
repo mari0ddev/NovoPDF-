@@ -204,23 +204,23 @@ const Icon = ({ d, size = 16 }) => (
 )
 
 const icons = {
-  bold:        'M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z',
-  italic:      'M19 4h-9M14 20H5M15 4L9 20',
-  underline:   'M6 4v6a6 6 0 0 0 12 0V4M4 20h16',
-  alignLeft:   'M3 6h18M3 12h12M3 18h15',
+  bold: 'M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z',
+  italic: 'M19 4h-9M14 20H5M15 4L9 20',
+  underline: 'M6 4v6a6 6 0 0 0 12 0V4M4 20h16',
+  alignLeft: 'M3 6h18M3 12h12M3 18h15',
   alignCenter: 'M3 6h18M6 12h12M4 18h16',
-  alignRight:  'M3 6h18M9 12h12M6 18h18',
-  bulletList:  'M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1',
+  alignRight: 'M3 6h18M9 12h12M6 18h18',
+  bulletList: 'M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1',
   orderedList: 'M10 6h11M10 12h11M10 18h11M4 6h.01M4 12h.01M4 18h.01',
-  image:       'M21 15l-5-5L5 20M3 3h18a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z',
-  signature:   'M3 17c3-3 6-6 8-3s5 6 8-3M3 20h18',
-  textFree:    'M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z',
-  plus:        'M12 5v14M5 12h14',
-  minus:       'M5 12h14',
-  save:        'M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM17 21v-8H7v8M7 3v5h8',
-  highlight:   'M9 11l-6 6v3h3l6-6m0 0l3.5-3.5a2 2 0 0 0 0-2.83l-2.17-2.17a2 2 0 0 0-2.83 0L9 11',
-  page:        'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M12 18v-6M9 15h6',
-  print:       'M6 2h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z M6 18h12M6 14h12M6 10h12M6 6h12',
+  image: 'M21 15l-5-5L5 20M3 3h18a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z',
+  signature: 'M3 17c3-3 6-6 8-3s5 6 8-3M3 20h18',
+  textFree: 'M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z',
+  plus: 'M12 5v14M5 12h14',
+  minus: 'M5 12h14',
+  save: 'M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM17 21v-8H7v8M7 3v5h8',
+  highlight: 'M9 11l-6 6v3h3l6-6m0 0l3.5-3.5a2 2 0 0 0 0-2.83l-2.17-2.17a2 2 0 0 0-2.83 0L9 11',
+  page: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M12 18v-6M9 15h6',
+  print: 'M6 2h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z M6 18h12M6 14h12M6 10h12M6 6h12',
   deletePage: 'M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 10v6M14 10v6',
   table: 'M3 5h18v14H3zM3 10h18M3 15h18M9 5v14M15 5v14',
 }
@@ -496,7 +496,7 @@ function FreeTextInline({ id, x, y, pageRef, onRemove, onCommitPosition }) {
             }}
             style={{ height: 24, fontSize: 12, borderRadius: 3, border: 'none', background: '#334155', color: '#fff' }}
           >
-            {[8,9,10,11,12,14,16,18,20,24,28,32].map(s => <option key={s} value={s}>{s}</option>)}
+            {[8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 28, 32].map(s => <option key={s} value={s}>{s}</option>)}
           </select>
 
           <input
@@ -536,7 +536,7 @@ function FreeTextInline({ id, x, y, pageRef, onRemove, onCommitPosition }) {
           borderRadius: 2,
           padding: '0 2px',
         }}
-       
+
       />
 
       {/* NOU: manerul de resize, la fel ca la FloatingImage — vizibil doar cand nu editezi */}
@@ -588,21 +588,21 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
   }
 
   const onPointerDown = (e) => {
-  e.preventDefault()
-  e.stopPropagation()
+    e.preventDefault()
+    e.stopPropagation()
 
 
 
-  const pageRect = pageRef?.current?.getBoundingClientRect()
-  if (!pageRect) return
+    const pageRect = pageRef?.current?.getBoundingClientRect()
+    if (!pageRect) return
 
-  setDragging(true)
+    setDragging(true)
 
-  dragOffset.current = {
-    x: e.clientX - pageRect.left - pos.x,
-    y: e.clientY - pageRect.top - pos.y,
+    dragOffset.current = {
+      x: e.clientX - pageRect.left - pos.x,
+      y: e.clientY - pageRect.top - pos.y,
+    }
   }
-}
 
   useEffect(() => {
     if (!dragging) return
@@ -685,8 +685,9 @@ function FloatingImage({ id, src, x, y, width, pageRef, onRemove, onCommitPositi
       {hovered && (
         <button
           className="no-print"
-          onMouseDown={(e) => { e.preventDefault(); e.stopPropagation()
-      }}
+          onMouseDown={(e) => {
+            e.preventDefault(); e.stopPropagation()
+          }}
 
           onMouseEnter={handleMouseEnter}
           onClick={onRemove}
@@ -798,7 +799,7 @@ function SignatureModal({ onSave, onClose }) {
 function Ruler({ width, zoom, activeEditor, indentPx, onIndentChange }) {
   const RULER_HEIGHT = 28
   const pxPerCm = 37.8 * zoom
- const totalCm = Math.floor(width / pxPerCm)
+  const totalCm = Math.floor(width / pxPerCm)
   const [hoveredX, setHoveredX] = React.useState(null)
   const [dragging, setDragging] = React.useState(false)
   const rulerRef = React.useRef(null)
@@ -912,8 +913,113 @@ function placeCaretAtPoint(editor, clientX, clientY) {
   if (document.caretPositionFromPoint) { const pos = document.caretPositionFromPoint(clientX, clientY); if (pos) { domNode = pos.offsetNode; offset = pos.offset } }
   else if (document.caretRangeFromPoint) { const range = document.caretRangeFromPoint(clientX, clientY); if (range) { domNode = range.startContainer; offset = range.startOffset } }
   if (!domNode) { editor.commands.focus('end'); return }
-  try { const pmPos = editor.view.posAtDOM(domNode, offset); if (pmPos !== null && pmPos >= 0) { editor.commands.setTextSelection(pmPos); editor.commands.focus(); return } } catch (_) {}
+  try { const pmPos = editor.view.posAtDOM(domNode, offset); if (pmPos !== null && pmPos >= 0) { editor.commands.setTextSelection(pmPos); editor.commands.focus(); return } } catch (_) { }
   editor.commands.focus('end')
+}
+
+
+
+/* ---- GRUPARE SPAN-URI IN BLOCURI (paragrafe) ---- */
+const LINE_TOLERANCE = 4
+const PARAGRAPH_GAP_FACTOR = 1.7
+
+function buildTextBlocks(textLayer, zoomVal) {
+  const allSpans = Array.from(textLayer.querySelectorAll('span'))
+    .filter(s => s.textContent && s.textContent.trim().length > 0)
+  const parentRect = textLayer.getBoundingClientRect()
+
+  const items = allSpans.map(span => {
+    const r = span.getBoundingClientRect()
+    const fontSize = parseFloat(window.getComputedStyle(span).fontSize) || 12
+    return {
+      span,
+      top: r.top - parentRect.top,
+      left: r.left - parentRect.left,
+      right: r.right - parentRect.left,
+      bottom: r.bottom - parentRect.top,
+      fontSize,
+    }
+  })
+
+  const tol = LINE_TOLERANCE * zoomVal
+  items.sort((a, b) => a.top - b.top || a.left - b.left)
+
+  const lines = []
+  items.forEach(item => {
+    let line = lines.find(l => Math.abs(l.top - item.top) <= tol)
+    if (!line) {
+      line = { top: item.top, bottom: item.bottom, items: [] }
+      lines.push(line)
+    }
+    line.items.push(item)
+    line.bottom = Math.max(line.bottom, item.bottom)
+  })
+  lines.sort((a, b) => a.top - b.top)
+  lines.forEach(l => {
+    l.items.sort((a, b) => a.left - b.left)
+    l.height = l.bottom - l.top
+    l.fontSize = l.items[0].fontSize
+  })
+
+  const MAX_LINES_PER_BLOCK = 5
+  const FONT_SIZE_CHANGE_RATIO = 1.25
+
+  const blocks = []
+  let current = null
+  let prevLine = null
+
+  lines.forEach(line => {
+    const gap = prevLine ? line.top - prevLine.bottom : 0
+    const refHeight = prevLine ? prevLine.height : line.height
+
+    const bigGap = gap > refHeight * PARAGRAPH_GAP_FACTOR
+    const fontJump = prevLine &&
+      (line.fontSize / prevLine.fontSize > FONT_SIZE_CHANGE_RATIO ||
+        prevLine.fontSize / line.fontSize > FONT_SIZE_CHANGE_RATIO)
+    const tooManyLines = current && current.lines.length >= MAX_LINES_PER_BLOCK
+
+    const isNewBlock = !current || bigGap || fontJump || tooManyLines
+
+    if (isNewBlock) {
+      current = { lines: [] }
+      blocks.push(current)
+    }
+    current.lines.push(line)
+    prevLine = line
+  })
+
+  return blocks
+}
+function findBlockForSpan(blocks, span) {
+  return blocks.find(block =>
+    block.lines.some(line => line.items.some(it => it.span === span))
+  )
+}
+
+function getBlockInfo(block) {
+  let minLeft = Infinity, minTop = Infinity, maxRight = -Infinity, maxBottom = -Infinity
+  const spans = []
+  const textLines = []
+
+  block.lines.forEach(line => {
+    textLines.push(line.items.map(it => it.span.textContent).join(' '))
+    line.items.forEach(it => {
+      spans.push(it.span)
+      minLeft = Math.min(minLeft, it.left)
+      minTop = Math.min(minTop, it.top)
+      maxRight = Math.max(maxRight, it.right)
+      maxBottom = Math.max(maxBottom, it.bottom)
+    })
+  })
+
+  return {
+    spans,
+    left: minLeft,
+    top: minTop,
+    width: maxRight - minLeft,
+    height: maxBottom - minTop,
+    text: textLines.join('\n'),
+  }
 }
 
 /* ---- PAGE OVERLAY ---- */
@@ -958,25 +1064,25 @@ export default function EditorPDF() {
   const [freeTextMode, setFreeTextMode] = useState(false)
   const [freeTextBoxes, setFreeTextBoxes] = useState([])
   const freeTextCounter = useRef(0)
-const [floatingImages, setFloatingImages] = useState([])
-const floatingImgCounter = useRef(0)
-const activeFreeTextSpanRef = useRef(null)
-const [editExistingMode, setEditExistingMode] = useState(false)
+  const [floatingImages, setFloatingImages] = useState([])
+  const floatingImgCounter = useRef(0)
+  const activeFreeTextSpanRef = useRef(null)
+  const [editExistingMode, setEditExistingMode] = useState(false)
 
 
-const skipHeightCheck = useRef(false)
-const [pdfSource, setPdfSource] = useState(null) // 'blank' | 'uploaded'
-
+  const skipHeightCheck = useRef(false)
+  const [pdfSource, setPdfSource] = useState(null) // 'blank' | 'uploaded'
+  const blockPreviewMapRef = useRef(new Map())
   const editorsRef = useRef([])
   const imgInputRef = useRef(null)
   const scrollRef = useRef(null)
   const pageRefs = useRef([])
-const [marginTop, setMarginTop] = React.useState(72) // ~2.5cm la zoom 1
+  const [marginTop, setMarginTop] = React.useState(72) // ~2.5cm la zoom 1
   const PAGE_WIDTH = Math.round(605 * zoom)
   const PAGE_HEIGHT = Math.round(842 * zoom)
   const PAGE_GAP = 24
-const [showColorPicker, setShowColorPicker] = useState(false)
-const [selectedColor, setSelectedColor] = useState('#000000')
+  const [showColorPicker, setShowColorPicker] = useState(false)
+  const [selectedColor, setSelectedColor] = useState('#000000')
 
 
 
@@ -984,63 +1090,64 @@ const [selectedColor, setSelectedColor] = useState('#000000')
 
 
 
-const createBlankPDF = async () => {
-  const { PDFDocument } = await import('pdf-lib')
-  const pdf = await PDFDocument.create(); pdf.addPage([595, 842])
-  const bytes = await pdf.save()
-  setPdfFile(URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' })))
-  setPdfSource('blank')   // <-- nou
-}
 
-const handleUpload = (e) => {
-  const file = e.target.files[0]
-  if (!file || file.type !== 'application/pdf') return
-  setPdfFile(URL.createObjectURL(file))
-  setPdfSource('uploaded')   // <-- nou
-}
+  const createBlankPDF = async () => {
+    const { PDFDocument } = await import('pdf-lib')
+    const pdf = await PDFDocument.create(); pdf.addPage([595, 842])
+    const bytes = await pdf.save()
+    setPdfFile(URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' })))
+    setPdfSource('blank')   // <-- nou
+  }
+
+  const handleUpload = (e) => {
+    const file = e.target.files[0]
+    if (!file || file.type !== 'application/pdf') return
+    setPdfFile(URL.createObjectURL(file))
+    setPdfSource('uploaded')   // <-- nou
+  }
 
 
 
-const deletePage = async () => {
-  if (numPages <= 1) return
+  const deletePage = async () => {
+    if (numPages <= 1) return
 
-  const { PDFDocument } = await import('pdf-lib')
+    const { PDFDocument } = await import('pdf-lib')
 
-  const existingBytes = await fetch(pdfFile)
-    .then(r => r.arrayBuffer())
+    const existingBytes = await fetch(pdfFile)
+      .then(r => r.arrayBuffer())
 
-  const pdf = await PDFDocument.load(existingBytes)
+    const pdf = await PDFDocument.load(existingBytes)
 
-  pdf.removePage(activePage)
+    pdf.removePage(activePage)
 
-  const bytes = await pdf.save()
+    const bytes = await pdf.save()
 
-  setPdfFile(
-    URL.createObjectURL(
-      new Blob([bytes], { type: 'application/pdf' })
+    setPdfFile(
+      URL.createObjectURL(
+        new Blob([bytes], { type: 'application/pdf' })
+      )
     )
-  )
 
-  setActivePage(prev =>
-    Math.max(0, Math.min(prev, numPages - 2))
-  )
-}
-const printPDF = () => {
-  window.print()
-}
-useEffect(() => {
-  const closePicker = (e) => {
-    if (!e.target.closest('.color-picker-wrapper')) {
-      setShowColorPicker(false)
+    setActivePage(prev =>
+      Math.max(0, Math.min(prev, numPages - 2))
+    )
+  }
+  const printPDF = () => {
+    window.print()
+  }
+  useEffect(() => {
+    const closePicker = (e) => {
+      if (!e.target.closest('.color-picker-wrapper')) {
+        setShowColorPicker(false)
+      }
     }
-  }
 
-  document.addEventListener('mousedown', closePicker)
+    document.addEventListener('mousedown', closePicker)
 
-  return () => {
-    document.removeEventListener('mousedown', closePicker)
-  }
-}, [])
+    return () => {
+      document.removeEventListener('mousedown', closePicker)
+    }
+  }, [])
 
   useEffect(() => {
     if (!numPages) return
@@ -1053,11 +1160,11 @@ useEffect(() => {
       const newEditors = Array.from({ length: numPages - existing.length }, () =>
         new Editor({
           extensions: [
-  StarterKit, Underline, TextStyle, FontFamily, FontSize, Color, Highlight,
-  Indent, ParagraphIndent, TextAlign.configure({ types: ['heading', 'paragraph'] }),
-  CustomImage,
-  TableKit.configure({ table: { resizable: true } }),
-],
+            StarterKit, Underline, TextStyle, FontFamily, FontSize, Color, Highlight,
+            Indent, ParagraphIndent, TextAlign.configure({ types: ['heading', 'paragraph'] }),
+            CustomImage,
+            TableKit.configure({ table: { resizable: true } }),
+          ],
           content: '<p></p>',
         })
       )
@@ -1078,171 +1185,328 @@ useEffect(() => {
     return () => { activeEditor.off('selectionUpdate', sync); activeEditor.off('update', sync) }
   }, [activeEditor, zoom, activePage])
 
-
   useEffect(() => {
-  if (!editExistingMode) {
-    activeFreeTextSpanRef.current = null
-    return
-  }
+    if (!editExistingMode) {
+      activeFreeTextSpanRef.current = null
+      return
+    }
+    const debugClick = (e) => {
 
-  const cleanups = []
+    }
+    document.addEventListener('click', debugClick, { capture: true })
 
-  for (let i = 0; i < numPages; i++) {
-    const pageEl = pageRefs.current[i]
-    if (!pageEl) continue
+    const cleanups = [() => document.removeEventListener('click', debugClick, { capture: true })]
 
-    const textLayer = pageEl.querySelector('.react-pdf__Page__textContent')
-    if (!textLayer) continue
 
-    const onSpanClick = (e) => {
-      const span = e.target.closest('span')
-      if (!span || !textLayer.contains(span)) return
 
-      setActivePage(i)
-      activeFreeTextSpanRef.current = span
-
-      if (span.dataset.editing === 'true') {
-        span.focus()
-        return
+    const attachBlurAndKeydown = (el, cover, info) => {
+      if (el._pdfKeydownHandler) {
+        document.removeEventListener('keydown', el._pdfKeydownHandler, { capture: true })
+        el._pdfKeydownHandler = null
+      }
+      if (el._pdfBlurHandler) {
+        el.removeEventListener('blur', el._pdfBlurHandler)
+        el._pdfBlurHandler = null
       }
 
-      span.dataset.originalStyle = span.getAttribute('style') || ''
-      span.dataset.originalText = span.textContent || ''
-
-      const rect = span.getBoundingClientRect()
-      const parentRect = textLayer.getBoundingClientRect()
-      const left = rect.left - parentRect.left
-      const top = rect.top - parentRect.top
-
-      span.dataset.originalLeft = `${left}px`
-      span.dataset.originalTop = `${top}px`
-
-        if (!span.dataset.coverId) {
-        const cover = document.createElement('div')
-
-        const coverId =
-          `pdf-cover-${Date.now()}-${Math.random()
-            .toString(36)
-            .slice(2)}`
-
-        cover.dataset.forSpan = coverId
-        // extindem coperta putin, doar cat sa acopere diacriticele (Ă, Â, Î), fara sa acopere randul de dedesubt
-       const EXTRA_TOP = 6
-        const EXTRA_BOTTOM = 2
-        const EXTRA_SIDE = 4
-
-       Object.assign(cover.style, {
-  position: 'absolute',
-
-  left: `${left - EXTRA_SIDE}px`,
-  top: `${top - EXTRA_TOP}px`,
-
-  width: `${rect.width + EXTRA_SIDE * 2}px`,
-  height: `${rect.height + EXTRA_TOP + EXTRA_BOTTOM}px`,
-
-  backgroundColor: '#fff',
-
-  zIndex: '4',
-
-  pointerEvents: 'none',
-
-  boxSizing: 'border-box'
-        })
-
-        textLayer.appendChild(cover)
-
-        span.dataset.coverId = coverId
-      }
-
-      span.dataset.editing = 'true'
-      span.style.position = 'absolute'
-      span.style.left = `${left}px`
-      span.style.top = `${top}px`
-      span.style.transform = 'none'
-      span.style.whiteSpace = 'nowrap'
-      span.style.fontWeight = 'normal'
-      span.style.color = '#000'
-      span.style.background = '#fff'
-      span.style.zIndex = '5'
-      span.style.minWidth = '30px'
-      span.style.minHeight = '15px'
-      span.style.display = 'inline-block'
-      span.style.boxSizing = 'border-box'
-      span.style.padding = '2px 3px'
-      span.contentEditable = true
-      span.spellcheck = false
-
-  
-      makePdfTextDraggable(span, textLayer)
-      span.focus()
-
-      const onKeyDown = (e) => { e.stopPropagation() }
+      const onKeyDown = (ke) => { ke.stopPropagation() }
       document.addEventListener('keydown', onKeyDown, { capture: true })
+      el._pdfKeydownHandler = onKeyDown
 
-      const onBlur = () => {
-        span.contentEditable = false
-        span.dataset.editing = 'false'
+  const onBlur = (be) => {
+
+  if (be?.relatedTarget?.closest?.('.app-toolbar')) return
+
+  el.contentEditable = false
+  el.dataset.editing = 'false'
         document.removeEventListener('keydown', onKeyDown, { capture: true })
-        span.removeEventListener('blur', onBlur)
+        el._pdfKeydownHandler = null
 
-        const changed = span.textContent !== span.dataset.originalText
-        const highlighted = span.dataset.highlighted === 'true'
-        const moved =
-          span.style.left !== span.dataset.originalLeft ||
-          span.style.top !== span.dataset.originalTop
+        if (cover && info) {
+        const changed =
+  el.innerText.trim() !== el.dataset.originalText.trim() ||
+  el.innerHTML !== el.dataset.originalHtml
+  
+const moved = el.dataset.didMove === 'true'
+          if (!changed && !moved) {
+            el.remove()
+            cover.remove()
+            info.spans.forEach(s => { s.style.visibility = '' })
 
-        if (!changed && !highlighted && !moved) {
-          span.setAttribute('style', span.dataset.originalStyle)
-          const cover = textLayer.querySelector(`[data-for-span="${span.dataset.coverId}"]`)
-          cover?.remove()
-          delete span.dataset.coverId
+
+            if (el._pdfHandles) {
+              el._pdfHandles.remove()
+              el._pdfHandles = null
+            }
+          } else {
+
+          }
         }
       }
 
-      span.addEventListener('blur', onBlur)
+      el.addEventListener('blur', onBlur)
+      el._pdfBlurHandler = onBlur
     }
 
-    textLayer.addEventListener('click', onSpanClick)
-    cleanups.push(() => { textLayer.removeEventListener('click', onSpanClick) })
-  }
 
-  return () => { cleanups.forEach((fn) => fn()) }
-}, [editExistingMode, numPages])
+    const onPaste = (pe) => {
+      pe.preventDefault()
+      const text = (pe.clipboardData || window.clipboardData).getData('text/plain')
 
-useEffect(() => {
-  for (let i = 0; i < numPages; i++) {
-    const pageEl = pageRefs.current[i]
-    if (!pageEl) continue
-    const textLayer = pageEl.querySelector('.react-pdf__Page__textContent')
-    if (!textLayer) continue
-
-    const spans = textLayer.querySelectorAll('span')
-    spans.forEach(span => {
-      if (span.dataset.editing === 'true') return
-      if (editExistingMode) {
-        span.style.outline = '1px dashed rgba(99,102,241,0.5)'
-        span.style.pointerEvents = 'auto'
-        span.style.cursor = 'text'
-      } else {
-        span.style.outline = 'none'
-        span.style.pointerEvents = 'none'
-      }
-    })
-  }
-}, [editExistingMode, zoom, numPages])
-
-const applyToActiveTarget = (tiptapFn, execCmd = null, execValue = null) => {
-  if (editExistingMode && activeFreeTextSpanRef.current) {
-    const span = activeFreeTextSpanRef.current
-    span.contentEditable = true
-    span.dataset.editing = 'true'
-    span.focus()
-    if (execCmd) {
-      const range = document.createRange()
-      range.selectNodeContents(span)
       const sel = window.getSelection()
+      if (!sel.rangeCount) return
+      const range = sel.getRangeAt(0)
+      range.deleteContents()
+
+      const node = document.createTextNode(text)
+      range.insertNode(node)
+
+      range.setStartAfter(node)
+      range.setEndAfter(node)
       sel.removeAllRanges()
       sel.addRange(range)
+    }
+
+    for (let i = 0; i < numPages; i++) {
+      const pageEl = pageRefs.current[i]
+      if (!pageEl) continue
+
+      const textLayer = pageEl.querySelector('.react-pdf__Page__textContent')
+      if (!textLayer) continue
+
+      const onSpanClick = (e) => {
+        const existingBlock = e.target.closest('.pdf-edit-block')
+        if (e.target.closest('.pdf-move-handle')) {
+          e.stopPropagation()
+          return
+        }
+        if (existingBlock && textLayer.contains(existingBlock)) {
+          const alreadyEditing = existingBlock.dataset.editing === 'true'
+          if (!alreadyEditing) {
+            existingBlock.contentEditable = true
+            existingBlock.dataset.editing = 'true'
+            existingBlock.focus({ preventScroll: true })
+            existingBlock._pdfShowHandles?.()
+            attachBlurAndKeydown(existingBlock)
+            if (!existingBlock.dataset.pasteAttached) {
+              existingBlock.dataset.pasteAttached = 'true'
+              existingBlock.addEventListener('paste', onPaste)
+            }
+          }
+          activeFreeTextSpanRef.current = existingBlock
+          return   // <-- ESENȚIAL: nu continua
+        }
+
+        const span = e.target.closest('span')
+        if (!span || !textLayer.contains(span)) return
+
+        setActivePage(i)
+
+        const blocks = buildTextBlocks(textLayer, zoom)
+        const block = findBlockForSpan(blocks, span)
+        if (!block) return
+
+        const info = getBlockInfo(block)
+
+        const stalePreview = blockPreviewMapRef.current.get(span)
+        if (stalePreview) {
+          stalePreview.remove()
+          info.spans.forEach(s => blockPreviewMapRef.current.delete(s))
+        }
+
+        const EXTRA_TOP = 6 * zoom
+        const EXTRA_BOTTOM = 0
+        const EXTRA_SIDE = 4 * zoom
+
+        const cover = document.createElement('div')
+        const coverId = `pdf-cover-${Date.now()}-${Math.random().toString(36).slice(2)}`
+        cover.dataset.blockCover = coverId
+
+        Object.assign(cover.style, {
+          position: 'absolute',
+          left: `${info.left - EXTRA_SIDE}px`,
+          top: `${info.top - EXTRA_TOP}px`,
+          width: `${info.width + EXTRA_SIDE * 2}px`,
+          height: `${info.height + EXTRA_TOP + EXTRA_BOTTOM}px`,
+          backgroundColor: '#fff',
+          zIndex: '4',
+          pointerEvents: 'none',
+          boxSizing: 'border-box',
+        })
+
+        textLayer.appendChild(cover)
+        info.spans.forEach(s => { s.style.visibility = 'hidden' })
+
+        const firstSpan = info.spans.reduce((longest, s) =>
+          s.textContent.length > longest.textContent.length ? s : longest, info.spans[0])
+        const computed = window.getComputedStyle(firstSpan)
+
+        let realLineHeightPx
+        if (block.lines.length > 1) {
+          const gaps = []
+          for (let li = 1; li < block.lines.length; li++) {
+            gaps.push(block.lines[li].top - block.lines[li - 1].top)
+          }
+          realLineHeightPx = gaps.reduce((a, b) => a + b, 0) / gaps.length
+        } else {
+          realLineHeightPx = block.lines[0].height * 1.25
+        }
+
+        const blockEl = document.createElement('div')
+        blockEl.className = 'pdf-edit-block'
+        blockEl.dataset.editing = 'true'
+        blockEl.dataset.originalText = info.text
+        blockEl.dataset.coverId = coverId
+        blockEl.contentEditable = true
+        blockEl.spellcheck = false
+        blockEl.innerText = info.text
+        blockEl.dataset.originalHtml = blockEl.innerHTML
+
+        textLayer.appendChild(blockEl)
+        activeFreeTextSpanRef.current = blockEl
+
+        Object.assign(blockEl.style, {
+          position: 'absolute',
+          left: `${info.left}px`,
+          top: `${info.top}px`,
+          minWidth: `${info.width}px`,
+          minHeight: `${info.height}px`,
+          fontFamily: computed.fontFamily,
+          fontSize: computed.fontSize,
+          fontWeight: 'normal',
+          lineHeight: `${realLineHeightPx}px`,
+          color: '#000',
+          background: '#fff',
+          whiteSpace: 'pre-wrap',
+          boxSizing: 'border-box',
+          padding: '2px 3px',
+          zIndex: '5',
+          outline: 'none',
+          pointerEvents: 'auto',   // <-- ADAUGA ASTA
+        })
+        makePdfTextDraggable(blockEl, textLayer)
+
+
+        const range = document.createRange()
+        range.selectNodeContents(blockEl)
+        range.collapse(false)
+        const sel = window.getSelection()
+        sel.removeAllRanges()
+        sel.addRange(range)
+
+        attachBlurAndKeydown(blockEl, cover, info)
+        blockEl.addEventListener('paste', onPaste)
+      }
+
+      textLayer.addEventListener('click', onSpanClick)
+      cleanups.push(() => { textLayer.removeEventListener('click', onSpanClick) })
+    }
+
+    return () => { cleanups.forEach((fn) => fn()) }
+  }, [editExistingMode, numPages, zoom])
+
+  
+  useEffect(() => {
+    const previewCleanups = []
+    blockPreviewMapRef.current.clear() // reset la fiecare rulare a efectului
+
+    for (let i = 0; i < numPages; i++) {
+      const pageEl = pageRefs.current[i]
+      if (!pageEl) continue
+      const textLayer = pageEl.querySelector('.react-pdf__Page__textContent')
+      if (!textLayer) continue
+
+      textLayer.querySelectorAll('.pdf-block-preview').forEach(el => el.remove())
+
+      const spans = textLayer.querySelectorAll('span')
+
+      if (!editExistingMode) {
+        spans.forEach(span => {
+          span.style.outline = 'none'
+          span.style.pointerEvents = 'none'
+          span.style.cursor = ''
+        })
+        continue
+      }
+
+      spans.forEach(span => {
+        span.style.outline = 'none'
+        span.style.pointerEvents = 'auto'
+        span.style.cursor = 'text'
+      })
+      const blocks = buildTextBlocks(textLayer, zoom)
+      blocks.forEach(block => {
+        const alreadyConverted = block.lines.some(l =>
+          l.items.some(it => it.span.style.visibility === 'hidden')
+        )
+        if (alreadyConverted) return
+
+        const info = getBlockInfo(block)
+        const preview = document.createElement('div')
+        preview.className = 'pdf-block-preview'
+        Object.assign(preview.style, {
+          position: 'absolute',
+          left: `${info.left - 2}px`,
+          top: `${info.top - 2}px`,
+          width: `${info.width + 4}px`,
+          height: `${info.height + 4}px`,
+          outline: '1px dashed rgba(99,102,241,0.5)',
+          pointerEvents: 'none',
+          zIndex: '3',
+          boxSizing: 'border-box',
+        })
+        textLayer.appendChild(preview)
+
+        // ---- FIX: legam preview-ul de span-urile lui ----
+        info.spans.forEach(s => blockPreviewMapRef.current.set(s, preview))
+      })
+
+      previewCleanups.push(() => {
+        textLayer.querySelectorAll('.pdf-block-preview').forEach(el => el.remove())
+      })
+    }
+
+    return () => {
+      previewCleanups.forEach(fn => fn())
+    }
+  }, [editExistingMode, zoom, numPages])
+const savedRangeRef = useRef(null)
+
+useEffect(() => {
+  const onSelChange = () => {
+    const block = activeFreeTextSpanRef.current
+    const sel = window.getSelection()
+    if (!block || !sel.rangeCount) return
+    if (block.contains(sel.anchorNode)) {
+      savedRangeRef.current = sel.getRangeAt(0).cloneRange()
+    }
+  }
+  document.addEventListener('selectionchange', onSelChange)
+  return () => document.removeEventListener('selectionchange', onSelChange)
+}, [])
+
+
+
+
+
+
+  const applyToActiveTarget = (tiptapFn, execCmd = null, execValue = null) => {
+  if (editExistingMode && activeFreeTextSpanRef.current) {
+    const block = activeFreeTextSpanRef.current
+    block.contentEditable = true
+    block.dataset.editing = 'true'
+    block.focus({ preventScroll: true })
+
+    const sel = window.getSelection()
+    if (savedRangeRef.current) {
+      try {
+        sel.removeAllRanges()
+        sel.addRange(savedRangeRef.current)
+      } catch (e) { }
+    }
+
+    if (execCmd) {
+      document.execCommand('styleWithCSS', false, true)
       document.execCommand(execCmd, false, execValue)
     }
   } else {
@@ -1250,30 +1514,54 @@ const applyToActiveTarget = (tiptapFn, execCmd = null, execValue = null) => {
   }
 }
 
-const applyStyleToActiveTarget = (tiptapFn, styleProp, styleValue) => {
+ const applyStyleToActiveTarget = (tiptapFn, styleProp, styleValue) => {
   if (editExistingMode && activeFreeTextSpanRef.current) {
-    activeFreeTextSpanRef.current.style[styleProp] = styleValue
+    const block = activeFreeTextSpanRef.current
+    block.style[styleProp] = styleValue
+    block.dataset.formatted = 'true'
+    block.focus({ preventScroll: true })
   } else {
     tiptapFn()
   }
 }
+   const HIGHLIGHT_HEX = '#bef264'               // lime aprins
+  const HIGHLIGHT_RGB = 'rgb(190, 242, 100)'    // același, ca să-l detectăm
+   const highlightActivePdfText = () => {
+    const block = activeFreeTextSpanRef.current
+    if (!block) return
 
-const highlightActivePdfText = () => {
-  const span = activeFreeTextSpanRef.current
-  if (!span) return
+    block.contentEditable = true
+    block.dataset.editing = 'true'
 
-  const isHighlighted = span.dataset.highlighted === 'true'
-  if (isHighlighted) {
-    span.style.backgroundColor = '#fff'
-    span.style.color = '#000'
-    span.dataset.highlighted = 'false'
-  } else {
-    span.style.backgroundColor = '#fef08a'
-    span.style.color = '#000'
-    span.dataset.highlighted = 'true'
+    const sel = window.getSelection()
+    if (!sel.rangeCount || sel.isCollapsed) return
+    if (!block.contains(sel.anchorNode)) return
+
+    const savedRange = sel.getRangeAt(0).cloneRange()
+
+    let node = savedRange.commonAncestorContainer
+    if (node.nodeType === Node.TEXT_NODE) node = node.parentElement
+    let isHighlighted = false
+    while (node && node !== block) {
+      if (window.getComputedStyle(node).backgroundColor === HIGHLIGHT_RGB) {
+        isHighlighted = true
+        break
+      }
+      node = node.parentElement
+    }
+
+    document.execCommand('styleWithCSS', false, true)
+    const color = isHighlighted ? '#ffffff' : HIGHLIGHT_HEX
+    if (!document.execCommand('hiliteColor', false, color)) {
+      document.execCommand('backColor', false, color)
+    }
+
+    try {
+      sel.removeAllRanges()
+      sel.addRange(savedRange)
+    } catch (e) { }
   }
-}
-
+ 
 const alignPdfText = (alignment) => {
   const span = activeFreeTextSpanRef.current
   if (!span) return
@@ -1307,6 +1595,10 @@ const makePdfTextDraggable = (span, textLayer) => {
   let startWidth = 0
   let startHeight = 0
   let resizeDirection = ''
+  let pendingDrag = false
+
+  const DRAG_THRESHOLD = 10
+
   const onViewportChange = () => {
     if (handles.style.display !== 'none') {
       updateHandles()
@@ -1321,7 +1613,7 @@ const makePdfTextDraggable = (span, textLayer) => {
   window.addEventListener('resize', onViewportChange)
   window.addEventListener('orientationchange', onViewportChange)
 
- 
+
 
   const handles = document.createElement('div')
   handles.className = 'pdf-resize-handles'
@@ -1332,6 +1624,8 @@ const makePdfTextDraggable = (span, textLayer) => {
     pointerEvents: 'none'
   })
   document.body.appendChild(handles)
+  span._pdfHandles = handles
+
 
   const createHandle = (position, cursor) => {
     const handle = document.createElement('div')
@@ -1350,7 +1644,7 @@ const makePdfTextDraggable = (span, textLayer) => {
     })
     handles.appendChild(handle)
 
-        handle.style.touchAction = 'none'
+    handle.style.touchAction = 'none'
 
     handle.addEventListener('pointerdown', (e) => {
       e.preventDefault()
@@ -1386,8 +1680,8 @@ const makePdfTextDraggable = (span, textLayer) => {
   moveHandle.className = 'pdf-move-handle'
   Object.assign(moveHandle.style, {
     position: 'absolute',
-    width: '22px',
-    height: '22px',
+    width: '18px',
+    height: '18px',
     borderRadius: '6px',
     background: '#6b21a8',
     border: '2px solid white',
@@ -1400,28 +1694,33 @@ const makePdfTextDraggable = (span, textLayer) => {
     justifyContent: 'center',
     color: '#fff',
     fontSize: '12px',
+    userSelect: 'none',
+    touchAction: 'none'
   })
   moveHandle.innerHTML = '✥'
   handles.appendChild(moveHandle)
 
+  moveHandle.addEventListener('click', (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+  })
   moveHandle.style.touchAction = 'none'
 
   moveHandle.addEventListener('pointerdown', (e) => {
     e.preventDefault()
     e.stopPropagation()
 
-    dragging = true
+    span.dataset.didMove = 'false'   // <-- ADAUGA ASTA
+    pendingDrag = true
+    dragging = false
     startX = e.clientX
     startY = e.clientY
     startLeft = parseFloat(span.style.left) || 0
     startTop = parseFloat(span.style.top) || 0
-    span.style.cursor = 'grabbing'
     document.body.style.userSelect = 'none'
 
     moveHandle.setPointerCapture(e.pointerId)
   })
-
-
 
 
 
@@ -1448,23 +1747,34 @@ const makePdfTextDraggable = (span, textLayer) => {
     setPosition('.right', rect.width, rect.height / 2)
     setPosition('.bottom-left', 0, rect.height)
     setPosition('.bottom', rect.width / 2, rect.height)
-     setPosition('.bottom-right', rect.width, rect.height)
+    setPosition('.bottom-right', rect.width, rect.height)
 
-    moveHandle.style.left = `${rect.width / 2 - 11}px`
-    moveHandle.style.top = `-28px`
+    moveHandle.style.left = `${rect.width / 2 - 9}px`
+    moveHandle.style.top = `-32px`
+
+
   }
 
-    let repositionInterval = null
+  let repositionInterval = null
 
   const showHandles = () => {
-    if (span.dataset.editing !== 'true') return
+
+    if (span.dataset.editing !== 'true') {
+
+      return
+    }
+
     handles.style.display = 'block'
     updateHandles()
 
-    // repozitioneaza continuu cat timp editezi, ca sa prinda si animatia tastaturii pe iOS
+
     if (repositionInterval) clearInterval(repositionInterval)
+
     repositionInterval = setInterval(() => {
-      if (span.dataset.editing === 'true' && handles.style.display !== 'none') {
+      if (
+        span.dataset.editing === 'true' &&
+        handles.style.display !== 'none'
+      ) {
         updateHandles()
       } else {
         clearInterval(repositionInterval)
@@ -1472,9 +1782,11 @@ const makePdfTextDraggable = (span, textLayer) => {
       }
     }, 100)
   }
-  
+
+  span._pdfShowHandles = showHandles
 
   const onMouseDown = (e) => {
+    if (!e.altKey) return
     if (e.button !== 0) return
     if (span.dataset.editing !== 'true') return
     if (e.target.closest('.pdf-resize-handle')) return
@@ -1493,6 +1805,18 @@ const makePdfTextDraggable = (span, textLayer) => {
   }
 
   const onMouseMove = (e) => {
+    if (pendingDrag && !dragging) {
+      const dx = e.clientX - startX
+      const dy = e.clientY - startY
+      if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
+        dragging = true
+        span.dataset.didMove = 'true'
+        span.style.cursor = 'grabbing'
+      } else {
+        return
+      }
+    }
+
     if (dragging) {
       const dx = e.clientX - startX
       const dy = e.clientY - startY
@@ -1542,6 +1866,7 @@ const makePdfTextDraggable = (span, textLayer) => {
       dragging = false
       span.style.cursor = 'text'
     }
+    pendingDrag = false
     if (resizing) {
       resizing = false
       resizeDirection = ''
@@ -1560,7 +1885,7 @@ const makePdfTextDraggable = (span, textLayer) => {
 
 
   const hideHandles = () => {
-  handles.style.display = 'none'
+    handles.style.display = 'none'
   }
 
   const onScroll = () => {
@@ -1571,7 +1896,7 @@ const makePdfTextDraggable = (span, textLayer) => {
   span.addEventListener('blur', hideHandles)
 
 
-    return () => {
+  return () => {
     span.removeEventListener('mousedown', onMouseDown)
     document.removeEventListener('pointermove', onMouseMove)
     document.removeEventListener('pointerup', onMouseUp)
@@ -1593,7 +1918,7 @@ const makePdfTextDraggable = (span, textLayer) => {
     document.body.style.userSelect = ''
     delete span.dataset.dragInitialized
   }
- 
+
 }
 
 
@@ -1624,6 +1949,9 @@ const addImage = (e) => {
   reader.readAsDataURL(file); e.target.value = ''
 }
 
+
+
+
 const handleSignatureSave = (dataURL) => {
   floatingImgCounter.current += 1
   setFloatingImages(prev => [...prev, {
@@ -1639,7 +1967,7 @@ const handleSignatureSave = (dataURL) => {
 
 
 
-  const isAddingPageRef = useRef(false)
+const isAddingPageRef = useRef(false)
 
 
 
@@ -1658,14 +1986,14 @@ const addPage = async () => {
   }
 }
 
-  const addPageRef = useRef(null)
-  useEffect(() => { addPageRef.current = addPage })
-  useEffect(() => {
+const addPageRef = useRef(null)
+useEffect(() => { addPageRef.current = addPage })
+useEffect(() => {
   const editor = editorsRef.current[activePage]; if (!editor) return
-  const check = () => { 
+  const check = () => {
     if (skipHeightCheck.current) return   // <-- linia noua
     const el = editor.view.dom
-    if (el?.scrollHeight > PAGE_HEIGHT - 80) addPageRef.current?.() 
+    if (el?.scrollHeight > PAGE_HEIGHT - 80) addPageRef.current?.()
   }
   editor.on('update', check); return () => editor.off('update', check)
 }, [activePage, numPages, PAGE_HEIGHT])
@@ -1692,29 +2020,29 @@ useEffect(() => {
 
 
 
-  const savePDF = async () => {
-    setIsSaving(true)
-    try {
-      const html2canvas = (await import('html2canvas')).default
-      const { PDFDocument } = await import('pdf-lib')
-      const pdf = await PDFDocument.create()
-      for (let i = 0; i < numPages; i++) {
-        const pageEl = pageRefs.current[i]; if (!pageEl) continue
-        const canvas = await html2canvas(pageEl, { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false, ignoreElements: el => el.classList?.contains('no-print') })
-        const imgBytes = await fetch(canvas.toDataURL('image/png')).then(r => r.arrayBuffer())
-        const img = await pdf.embedPng(imgBytes)
-        const page = pdf.addPage([595, 842]); page.drawImage(img, { x: 0, y: 0, width: 595, height: 842 })
-      }
-      const bytes = await pdf.save()
-      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' })); a.download = 'edited.pdf'; a.click()
-    } finally { setIsSaving(false) }
-  }
+const savePDF = async () => {
+  setIsSaving(true)
+  try {
+    const html2canvas = (await import('html2canvas')).default
+    const { PDFDocument } = await import('pdf-lib')
+    const pdf = await PDFDocument.create()
+    for (let i = 0; i < numPages; i++) {
+      const pageEl = pageRefs.current[i]; if (!pageEl) continue
+      const canvas = await html2canvas(pageEl, { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false, ignoreElements: el => el.classList?.contains('no-print') })
+      const imgBytes = await fetch(canvas.toDataURL('image/png')).then(r => r.arrayBuffer())
+      const img = await pdf.embedPng(imgBytes)
+      const page = pdf.addPage([595, 842]); page.drawImage(img, { x: 0, y: 0, width: 595, height: 842 })
+    }
+    const bytes = await pdf.save()
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' })); a.download = 'edited.pdf'; a.click()
+  } finally { setIsSaving(false) }
+}
 
-   /* ---- LANDING ---- */
-  if (!pdfFile) {
-    return (
-      <>
-        <style>{`
+/* ---- LANDING ---- */
+if (!pdfFile) {
+  return (
+    <>
+      <style>{`
           .landing-btn {
             transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
           }
@@ -1724,28 +2052,28 @@ useEffect(() => {
             box-shadow: 0 8px 20px rgba(99,102,241,0.25);
           }
         `}</style>
-        <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #DCE8FF, #b8d0ff, #a0bcff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Segoe UI', sans-serif" }}>
-          <div style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.7)', borderRadius: 24, padding: '48px 56px', textAlign: 'center', color: '#1e293b', boxShadow: '0 25px 80px rgba(99,102,241,0.15)' }}>
-            <img src="novopdf logo.png" alt="Logo" style={{ width: 200, height: 200, marginBottom: -50, objectFit: 'contain' }} />
-            <h1 style={{ fontSize: 28, fontWeight: 800, margin: '0 0 4px', color: '#1e293b' }}>NovoPDF Editor</h1>
-            <p style={{ color: '#64748b', marginBottom: 32, fontSize: 14 }}>Edit or create PDFs directly in the browser</p>
-            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <button onClick={createBlankPDF} className="landing-btn" style={{ padding: '14px 32px', borderRadius: 12, background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', border: 'none', color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>+ Add PDF</button>
-              <label className="landing-btn" style={{ padding: '14px 32px', borderRadius: 12, background: 'rgba(255,255,255,0.8)', border: '1.5px solid #dce8ff', color: '#1e293b', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>
-                📂 Upload PDF
-                <input type="file" accept="application/pdf" onChange={handleUpload} style={{ display: 'none' }} />
-              </label>
-            </div>
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #DCE8FF, #b8d0ff, #a0bcff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Segoe UI', sans-serif" }}>
+        <div style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.7)', borderRadius: 24, padding: '48px 56px', textAlign: 'center', color: '#1e293b', boxShadow: '0 25px 80px rgba(99,102,241,0.15)' }}>
+          <img src="novopdf logo.png" alt="Logo" style={{ width: 200, height: 200, marginBottom: -50, objectFit: 'contain' }} />
+          <h1 style={{ fontSize: 28, fontWeight: 800, margin: '0 0 4px', color: '#1e293b' }}>NovoPDF Editor</h1>
+          <p style={{ color: '#64748b', marginBottom: 32, fontSize: 14 }}>Edit or create PDFs directly in the browser</p>
+          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button onClick={createBlankPDF} className="landing-btn" style={{ padding: '14px 32px', borderRadius: 12, background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', border: 'none', color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>+ Add PDF</button>
+            <label className="landing-btn" style={{ padding: '14px 32px', borderRadius: 12, background: 'rgba(255,255,255,0.8)', border: '1.5px solid #dce8ff', color: '#1e293b', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>
+              📂 Upload PDF
+              <input type="file" accept="application/pdf" onChange={handleUpload} style={{ display: 'none' }} />
+            </label>
           </div>
         </div>
-      </>
-    )
-  }
+      </div>
+    </>
+  )
+}
 
-  /* ---- EDITOR ---- */
-  return (
-    <>
-      <style>{`
+/* ---- EDITOR ---- */
+return (
+  <>
+    <style>{`
         .react-pdf__Page__annotations, .annotationLayer { display: none !important; }
         .ProseMirror { font-weight: 400 !important; }
         .ProseMirror p { font-weight: 400; margin: 0 0 4px; }
@@ -1755,430 +2083,429 @@ useEffect(() => {
         .ProseMirror h3 { font-size: 1.2rem; font-weight: 600; margin: 12px 0 4px; color: #334155; line-height: 1.4; }
       `} </style>
 
-      
-  
- 
 
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: "'Segoe UI', sans-serif", background: 'linear-gradient(135deg, #DCE8FF, #b8d0ff, #a0bcff)' }}>
 
-        {/* ===== TOOLBAR ===== */}
-        <div className="app-toolbar" style={{ display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap', padding: '6px 14px', background: '#ffffff', borderBottom: '1px solid #e8f0fe', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', zIndex: 100, minHeight: 52 }}>
 
-          {/* Text Style Dropdown — Normal text / Titlu / Subtitlu / H1 H2 H3 */}
-          <select
-            onChange={(e) => {
-              const val = e.target.value
-              if (!activeEditor) return
-              if (val === 'normal') activeEditor.chain().focus().setParagraphIndent(0).clearNodes().unsetAllMarks().run()
-              else if (val === 'h1') activeEditor.chain().focus().toggleHeading({ level: 1 }).run()
-              else if (val === 'h2') activeEditor.chain().focus().toggleHeading({ level: 2 }).run()
-              else if (val === 'h3') activeEditor.chain().focus().toggleHeading({ level: 3 }).run()
-              else if (val === 'title') activeEditor.chain().focus().toggleHeading({ level: 1 }).setFontSize('32').run()
-              else if (val === 'subtitle') activeEditor.chain().focus().toggleHeading({ level: 2 }).setFontSize('22').run()
-            }}
-            style={{ height: 34, borderRadius: 7, border: '1px solid #e2e8f0', padding: '0 8px', fontSize: 13, background: '#f8fafc', color: '#374151', cursor: 'pointer', minWidth: 130, fontWeight: 500 }}
+
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: "'Segoe UI', sans-serif", background: 'linear-gradient(135deg, #DCE8FF, #b8d0ff, #a0bcff)' }}>
+
+      {/* ===== TOOLBAR ===== */}
+      <div className="app-toolbar" style={{ display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap', padding: '6px 14px', background: '#ffffff', borderBottom: '1px solid #e8f0fe', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', zIndex: 100, minHeight: 52 }}>
+
+        {/* Text Style Dropdown — Normal text / Titlu / Subtitlu / H1 H2 H3 */}
+        <select
+          onChange={(e) => {
+            const val = e.target.value
+            if (!activeEditor) return
+            if (val === 'normal') activeEditor.chain().focus().setParagraphIndent(0).clearNodes().unsetAllMarks().run()
+            else if (val === 'h1') activeEditor.chain().focus().toggleHeading({ level: 1 }).run()
+            else if (val === 'h2') activeEditor.chain().focus().toggleHeading({ level: 2 }).run()
+            else if (val === 'h3') activeEditor.chain().focus().toggleHeading({ level: 3 }).run()
+            else if (val === 'title') activeEditor.chain().focus().toggleHeading({ level: 1 }).setFontSize('32').run()
+            else if (val === 'subtitle') activeEditor.chain().focus().toggleHeading({ level: 2 }).setFontSize('22').run()
+          }}
+          style={{ height: 34, borderRadius: 7, border: '1px solid #e2e8f0', padding: '0 8px', fontSize: 13, background: '#f8fafc', color: '#374151', cursor: 'pointer', minWidth: 130, fontWeight: 500 }}
+        >
+          <option value="normal">Normal text</option>
+          <option value="title">Titlu</option>
+          <option value="subtitle">Subtitlu</option>
+          <option value="h1">Heading 1</option>
+          <option value="h2">Heading 2</option>
+          <option value="h3">Heading 3</option>
+        </select>
+
+        <Sep />
+
+        {/* Format text */}
+        <TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleBold().run(), 'bold')} title="Bold (Ctrl+B)">
+          <Icon d={icons.bold} size={17} />
+        </TBtn>
+        <TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleItalic().run(), 'italic')} title="Italic (Ctrl+I)">
+          <Icon d={icons.italic} size={17} />
+        </TBtn>
+        <TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleUnderline().run(), 'underline')} title="Underline (Ctrl+U)">
+          <Icon d={icons.underline} size={17} />
+        </TBtn>
+
+
+
+        <Sep />
+
+        {/* Font */}
+        <select onChange={(e) => applyStyleToActiveTarget(() => activeEditor?.chain().focus().setFontFamily(e.target.value).run(), 'fontFamily', e.target.value)}
+          style={{ height: 34, borderRadius: 7, border: '1px solid #e2e8f0', padding: '0 8px', fontSize: 13, background: '#f8fafc', color: '#374151', cursor: 'pointer' }}>
+          <option value="Arial">Arial</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Courier New">Courier New</option>
+          <option value="Georgia">Georgia</option>
+        </select>
+
+        {/* Font size */}
+        <select onChange={(e) => applyStyleToActiveTarget(() => activeEditor?.chain().focus().setFontSize(e.target.value).run(), 'fontSize', e.target.value + 'px')}
+          style={{ height: 34, width: 60, borderRadius: 7, border: '1px solid #e2e8f0', padding: '0 4px', fontSize: 13, background: '#f8fafc', color: '#374151', cursor: 'pointer' }}
+          defaultValue="16">
+          {[8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 28, 32, 36, 48, 64, 72].map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
+
+        <Sep />
+        {/* Liste */}
+        <TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleBulletList().run(), 'insertUnorderedList')} title="Bullet list" style={editExistingMode ? { opacity: 0.3, pointerEvents: 'none' } : {}}>
+          <Icon d={icons.bulletList} />
+        </TBtn>
+        <TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleOrderedList().run(), 'insertOrderedList')} title="Numbered list" style={editExistingMode ? { opacity: 0.3, pointerEvents: 'none' } : {}}>
+          <Icon d={icons.orderedList} />
+        </TBtn>
+
+        <Sep />
+
+
+
+        {/* Aliniere */}
+        <TBtn
+          onClick={() => {
+            if (editExistingMode) {
+              alignPdfText('left')
+            } else {
+              applyToActiveTarget(() =>
+                activeEditor?.chain().focus().setTextAlign('left').run(),
+                'justifyLeft'
+              )
+            }
+          }}
+          title="Aliniere stânga"
+        >
+          <Icon d={icons.alignLeft} />
+        </TBtn>
+
+        <TBtn
+          onClick={() => {
+            if (editExistingMode) {
+              alignPdfText('center')
+            } else {
+              applyToActiveTarget(() =>
+                activeEditor?.chain().focus().setTextAlign('center').run(),
+                'justifyCenter'
+              )
+            }
+          }}
+          title="Aliniere centru"
+        >
+          <Icon d={icons.alignCenter} />
+        </TBtn>
+
+        <TBtn
+          onClick={() => {
+            if (editExistingMode) {
+              alignPdfText('right')
+            } else {
+              applyToActiveTarget(() =>
+                activeEditor?.chain().focus().setTextAlign('right').run(),
+                'justifyRight'
+              )
+            }
+          }}
+          title="Aliniere dreapta"
+        >
+          <Icon d={icons.alignRight} />
+        </TBtn>
+
+        <Sep />
+
+        {/* COLOR PICKER PHOTOSHOP STYLE */}
+
+        <div
+          className="color-picker-wrapper"
+          style={{ position: 'relative' }}
+        >
+          <TBtn
+            title="Text Color"
+            onClick={() => setShowColorPicker(v => !v)}
           >
-            <option value="normal">Normal text</option>
-            <option value="title">Titlu</option>
-            <option value="subtitle">Subtitlu</option>
-            <option value="h1">Heading 1</option>
-            <option value="h2">Heading 2</option>
-            <option value="h3">Heading 3</option>
-          </select>
-
-          <Sep />
-
-          {/* Format text */}
- <TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleBold().run(), 'bold')} title="Bold (Ctrl+B)">
-  <Icon d={icons.bold} size={17} />
-</TBtn>
-<TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleItalic().run(), 'italic')} title="Italic (Ctrl+I)">
-  <Icon d={icons.italic} size={17} />
-</TBtn>
-<TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleUnderline().run(), 'underline')} title="Underline (Ctrl+U)">
-  <Icon d={icons.underline} size={17} />
-</TBtn>
-            
-
-
-          <Sep />
-
-          {/* Font */}
-          <select onChange={(e) => applyStyleToActiveTarget(() => activeEditor?.chain().focus().setFontFamily(e.target.value).run(), 'fontFamily', e.target.value)}
-  style={{ height: 34, borderRadius: 7, border: '1px solid #e2e8f0', padding: '0 8px', fontSize: 13, background: '#f8fafc', color: '#374151', cursor: 'pointer' }}>
-  <option value="Arial">Arial</option>
-  <option value="Times New Roman">Times New Roman</option>
-  <option value="Courier New">Courier New</option>
-  <option value="Georgia">Georgia</option>
-</select>
-
-{/* Font size */}
-<select onChange={(e) => applyStyleToActiveTarget(() => activeEditor?.chain().focus().setFontSize(e.target.value).run(), 'fontSize', e.target.value + 'px')}
-  style={{ height: 34, width: 60, borderRadius: 7, border: '1px solid #e2e8f0', padding: '0 4px', fontSize: 13, background: '#f8fafc', color: '#374151', cursor: 'pointer' }}
-  defaultValue="16">
-  {[8,9,10,11,12,14,16,18,20,24,28,32,36,48,64,72].map(s => <option key={s} value={s}>{s}</option>)}
-</select>
-
-          <Sep />
-{/* Liste */}
-<TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleBulletList().run(), 'insertUnorderedList')} title="Bullet list" style={editExistingMode ? { opacity: 0.3, pointerEvents: 'none' } : {}}>
-  <Icon d={icons.bulletList} />
-</TBtn>
-<TBtn onClick={() => applyToActiveTarget(() => activeEditor?.chain().focus().toggleOrderedList().run(), 'insertOrderedList')} title="Numbered list" style={editExistingMode ? { opacity: 0.3, pointerEvents: 'none' } : {}}>
-  <Icon d={icons.orderedList} />
-</TBtn>
-
-<Sep />
-
-
-
-{/* Aliniere */}
-<TBtn
-  onClick={() => {
-    if (editExistingMode) {
-      alignPdfText('left')
-    } else {
-      applyToActiveTarget(() =>
-        activeEditor?.chain().focus().setTextAlign('left').run(),
-        'justifyLeft'
-      )
-    }
-  }}
-  title="Aliniere stânga"
->
-  <Icon d={icons.alignLeft} />
-</TBtn>
-
-<TBtn
-  onClick={() => {
-    if (editExistingMode) {
-      alignPdfText('center')
-    } else {
-      applyToActiveTarget(() =>
-        activeEditor?.chain().focus().setTextAlign('center').run(),
-        'justifyCenter'
-      )
-    }
-  }}
-  title="Aliniere centru"
->
-  <Icon d={icons.alignCenter} />
-</TBtn>
-
-<TBtn
-  onClick={() => {
-    if (editExistingMode) {
-      alignPdfText('right')
-    } else {
-      applyToActiveTarget(() =>
-        activeEditor?.chain().focus().setTextAlign('right').run(),
-        'justifyRight'
-      )
-    }
-  }}
-  title="Aliniere dreapta"
->
-  <Icon d={icons.alignRight} />
-</TBtn>
-
-          <Sep />
-
-          {/* COLOR PICKER PHOTOSHOP STYLE */}
-
-<div
-  className="color-picker-wrapper"
-  style={{ position: 'relative' }}
->
-  <TBtn
-    title="Text Color"
-    onClick={() => setShowColorPicker(v => !v)}
-  >
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        lineHeight: 1
-      }}
-    >
-      <span
-        style={{
-          fontWeight: 700,
-          fontSize: 16,
-          color: selectedColor
-        }}
-      >
-        A
-      </span>
-
-      <div
-        style={{
-          width: 18,
-          height: 3,
-          background: selectedColor,
-          borderRadius: 3,
-          marginTop: 2
-        }}
-      />
-    </div>
-  </TBtn>
-
-  {showColorPicker && (
-
-    <div
-      style={{
-        position: 'absolute',
-        top: 42,
-        left: 0,
-        zIndex: 99999,
-        background: '#fff',
-        borderRadius: 12,
-        padding: 16,
-        boxShadow: '0 15px 50px rgba(0,0,0,.25)',
-        border: '1px solid #e5e7eb'
-      }}
-    >
-
-    
-
-<HexColorPicker
-  color={selectedColor}
-  onChange={(color) => {
-    setSelectedColor(color)
-    applyToActiveTarget(() => activeEditor?.chain().focus().setColor(color).run(), 'foreColor', color)
-  }}
-/>
-      <input
-       value={selectedColor}
-  onChange={(e) => {
-    setSelectedColor(e.target.value)
-    if (activeFreeTextSpanRef.current) {
-      document.execCommand('foreColor', false, e.target.value)
-    } else {
-      activeEditor?.chain().focus().setColor(e.target.value).run()
-    }
-  }}
-        style={{
-          marginTop: 12,
-          width: '100%',
-          height: 36,
-          border: '1px solid #d1d5db',
-          borderRadius: 8,
-          padding: '0 10px',
-          fontSize: 14
-        }}
-      />
-
-    </div>
-
-  )}
-
-</div>
-       
-<TBtn
-  onClick={highlightActivePdfText}
-  title="Highlight"
-  style={{
-    background: '#fef9c3',
-    color: '#713f12'
-  }}
->
-  <Icon d={icons.highlight} size={14} />
-  <span style={{ fontSize: 11 }}>Mark</span>
-</TBtn>
-          <Sep />
-            
-          {/* Imagine */}
-          <TBtn onClick={() => imgInputRef.current.click()} title="Inserează imagine">
-            <Icon d={icons.image} />
-            <span style={{ fontSize: 11 }}>Image</span>
-          </TBtn>
-          <input type="file" hidden ref={imgInputRef} accept="image/*" onChange={addImage} />
-      
-          {/* Semnătură */}
-          <TBtn onClick={() => setShowSignatureModal(true)} title="Adauga semnatura" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: '#fff' }}>
-            <Icon d={icons.signature} />
-            <span style={{ fontSize: 11 }}>Semnatura</span>
-          </TBtn>
-          <TBtn onClick={() => setEditExistingMode(m => !m)} title="Editează text existent" active={editExistingMode}>
-  <span style={{ fontSize: 11 }}>Edit Text{editExistingMode ? ' ✓' : ''}</span>
-</TBtn>
-{/* Tabel */}
-{/* Tabel */}
-<TableGridPicker activeEditor={activeEditor} />
-
-{activeEditor?.isActive('table') && (
-  <>
-    <TBtn onClick={() => activeEditor.chain().focus().addRowAfter().run()} title="Adaugă rând">
-      <span style={{ fontSize: 11 }}>＋Rând</span>
-    </TBtn>
-    <TBtn onClick={() => activeEditor.chain().focus().deleteRow().run()} title="Șterge rând">
-      <span style={{ fontSize: 11 }}>－Rând</span>
-    </TBtn>
-    <TBtn onClick={() => activeEditor.chain().focus().addColumnAfter().run()} title="Adaugă coloană">
-      <span style={{ fontSize: 11 }}>＋Col</span>
-    </TBtn>
-    <TBtn onClick={() => activeEditor.chain().focus().deleteColumn().run()} title="Șterge coloană">
-      <span style={{ fontSize: 11 }}>－Col</span>
-    </TBtn>
-    <TBtn onClick={() => activeEditor.chain().focus().deleteTable().run()} title="Șterge tabelul" style={{ color: '#dc2626' }}>
-      <span style={{ fontSize: 14 }}>🗑️</span>
-      <span style={{ fontSize: 11 }}>Tabel</span>
-    </TBtn>
-  </>
-)}
-
-
-          <Sep />
-
-<TBtn onClick={() => setFreeTextMode(m => !m)} title="Free text press on the page" active={freeTextMode}>
-  <Icon d={icons.textFree} />
-  <span style={{ fontSize: 11 }}>Free Text{freeTextMode ? ' ✓' : ''}</span>
-</TBtn>
-
-
-
-
-          {/* Pagina nouă + zoom + save — dreapta */}
-          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4 }}>
-            <TBtn onClick={addPage} title="Adaugă pagină">
-  <span style={{ fontSize: 16 }}>➕</span>
-</TBtn>
-
-<TBtn onClick={deletePage} title="Șterge pagina">
-  <span style={{ fontSize: 16 }}>➖</span>
-</TBtn>
-
-<TBtn onClick={printPDF} title="Print">
-  <span style={{ fontSize: 16 }}>🖨️</span>
-</TBtn>
-
-            <Sep />
-
-            {/* Zoom */}
-            <div style={{ display: 'flex', alignItems: 'center', background: '#f1f5f9', borderRadius: 8, border: '1px solid #e2e8f0', overflow: 'hidden', height: 36 }}>
-              <TBtn onClick={() => setZoom(z => Math.max(0.5, z - 0.1))} title="Zoom out" style={{ borderRadius: 0 }}>
-                <Icon d={icons.minus} size={14} />
-              </TBtn>
-              <span style={{ fontSize: 12, minWidth: 40, textAlign: 'center', color: '#374151', fontWeight: 600 }}>
-                {Math.round(zoom * 100)}%
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                lineHeight: 1
+              }}
+            >
+              <span
+                style={{
+                  fontWeight: 700,
+                  fontSize: 16,
+                  color: selectedColor
+                }}
+              >
+                A
               </span>
-              <TBtn onClick={() => setZoom(z => Math.min(2.5, z + 0.1))} title="Zoom in" style={{ borderRadius: 0 }}>
-                <Icon d={icons.plus} size={14} />
-              </TBtn>
+
+              <div
+                style={{
+                  width: 18,
+                  height: 3,
+                  background: selectedColor,
+                  borderRadius: 3,
+                  marginTop: 2
+                }}
+              />
             </div>
+          </TBtn>
 
-            <Sep />
-
-            {/* Save */}
-            <button onClick={savePDF} disabled={isSaving}
-              style={{ display: 'flex', alignItems: 'center', gap: 6, height: 36, padding: '0 16px', borderRadius: 8, border: 'none', background: isSaving ? '#86efac' : 'linear-gradient(135deg, #16a34a, #15803d)', color: '#fff', fontWeight: 700, fontSize: 12, cursor: isSaving ? 'wait' : 'pointer', minWidth: 80 }}>
-              <Icon d={icons.save} size={14} />
-              {isSaving ? 'Saving...' : 'Save'}
-            </button>
-          </div>
-        </div>
-
-        {/* ===== CANVAS ===== */}
-        <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-
-         {/* Vertical ruler */}
-<div style={{ width: 28, background: 'rgba(255,255,255,0.4)', borderRight: '1px solid #dce8ff', flexShrink: 0, overflowY: 'hidden' }}>
-  <div style={{ height: 36 }} />
-  <VerticalRulerMargin
-    height={PAGE_HEIGHT}
-    zoom={zoom}
-    activeEditor={editorsRef.current[activePage]}
-    marginTopPx={marginTop}
-    onMarginChange={(px) => {
-      setMarginTop(px)
+          {showColorPicker && (
+  <div
+    onMouseDown={(e) => {
+      if (e.target.tagName !== 'INPUT') e.preventDefault()
     }}
-  />
+    style={{
+      position: 'absolute',
+      top: 42,
+      left: 0,
+      zIndex: 99999,
+      background: '#fff',
+      borderRadius: 12,
+      padding: 16,
+      boxShadow: '0 15px 50px rgba(0,0,0,.25)',
+      border: '1px solid #e5e7eb'
+    }}
+  >
+    <HexColorPicker
+      color={selectedColor}
+      onChange={(color) => {
+        setSelectedColor(color)
+        applyToActiveTarget(
+          () => activeEditor?.chain().focus().setColor(color).run(),
+          'foreColor',
+          color
+        )
+      }}
+    />
 
-</div>
-          {/* Scroll area */}
-          <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-
-            {/* Horizontal ruler — sticky, centrat cu pagina */}
-            <div style={{ position: 'sticky', top: 0, zIndex: 50, width: PAGE_WIDTH, alignSelf: 'center', background: 'rgba(255,255,255,0.95)', marginBottom: 8, boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
-              <Ruler width={PAGE_WIDTH} zoom={zoom} activeEditor={activeEditor} indentPx={indentPx} onIndentChange={setIndentPx} />
-            </div>
-
-            {/* Pagini */}
-            <div data-editors-ready={editorsReady} style={{ padding: '16px 0 40px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Document file={pdfFile} onLoadSuccess={({ numPages: n }) => setNumPages(n)} style={{ display: 'contents' }}>
-                {Array.from({ length: numPages }).map((_, i) => (
-                  <div key={i} ref={el => pageRefs.current[i] = el}
-                    style={{ position: 'relative', width: PAGE_WIDTH, minHeight: PAGE_HEIGHT, background: '#fff', marginBottom: i < numPages - 1 ? PAGE_GAP : 0, boxShadow: activePage === i ? '0 0 0 3px #6366f1, 0 8px 40px rgba(99,102,241,0.25)' : '0 4px 24px rgba(0,0,0,0.18)', borderRadius: 4, overflow: 'hidden', cursor: freeTextMode ? 'crosshair' : 'text', flexShrink: 0 }}>
-                   <div className={editExistingMode ? 'edit-existing-active' : ''} style={{ pointerEvents: 'none' }}>
-  <Page pageNumber={i + 1} scale={zoom} renderAnnotationLayer={false} />
-</div>
-                    {freeTextBoxes.filter(b => b.pageIndex === i).map(box => (
-<FreeTextInline
-  key={box.id}
-  id={box.id}
-  x={box.x}
-  y={box.y}
-  pageRef={{ current: pageRefs.current[i] }}
-  onRemove={() => setFreeTextBoxes(prev => prev.filter(b => b.id !== box.id))}
-  onCommitPosition={(id, pos) => setFreeTextBoxes(prev =>
-    prev.map(b => b.id === id ? { ...b, x: pos.x, y: pos.y } : b)
-  )}
-  onFocusEditable={(span) => { activeFreeTextSpanRef.current = span }}
-  onBlurEditable={() => { /* nu mai reseta la null aici, altfel pierzi contextul la click pe toolbar */ }}
+    <input
+      value={selectedColor}
+      onChange={(e) => {
+        setSelectedColor(e.target.value)
+        applyToActiveTarget(
+          () => activeEditor?.chain().focus().setColor(e.target.value).run(),
+          'foreColor',
+          e.target.value
+        )
+      }}
+      style={{
+        marginTop: 12,
+        width: '100%',
+        height: 36,
+        border: '1px solid #d1d5db',
+        borderRadius: 8,
+        padding: '0 10px',
+        fontSize: 14
+      }}
+    />
+  </div>
+)}
  
-/>
-  
-
-  
-))}
-{floatingImages.filter(img => img.pageIndex === i).map(img => (
-  <FloatingImage
-    key={img.id}
-    id={img.id}
-    src={img.src}
-    x={img.x}
-    y={img.y}
-    width={img.width}
-    pageRef={{ current: pageRefs.current[i] }}
-    onRemove={() => setFloatingImages(prev => prev.filter(f => f.id !== img.id))}
-    onCommitPosition={(id, pos) => setFloatingImages(prev => prev.map(f => f.id === id ? { ...f, x: pos.x, y: pos.y } : f))}
-    onCommitSize={(id, w) => setFloatingImages(prev => prev.map(f => f.id === id ? { ...f, width: w } : f))}
-  />
-))}
-
-
-<PageOverlay
-  editor={editorsRef.current[i]}
-  pageIndex={i}
-  activePage={activePage}
-  setActivePage={setActivePage}
-  onPageClick={(rx, ry, cx, cy) => handlePageClick(rx, ry, cx, cy, i)}
-  freeTextMode={freeTextMode}
-  pdfSource={pdfSource}
-  disabled={editExistingMode}   // <-- linia noua
->
-  {editorsRef.current[i] && <EditorContent editor={editorsRef.current[i]} style={{ minHeight: '100%', outline: 'none' }} />}
-</PageOverlay>
-
-                    <div className="no-print" style={{ position: 'absolute', bottom: 10, right: 14, fontSize: 11, color: '#94a3b8', zIndex: 4, pointerEvents: 'none' }}>
-                      {i + 1} / {numPages}
-                    </div>
-                  </div>
-                ))}
-
-
-
-              </Document>
-            </div>
-          </div>
         </div>
 
-        {showSignatureModal && <SignatureModal onSave={handleSignatureSave} onClose={() => setShowSignatureModal(false)} />}
+        <TBtn
+          onClick={highlightActivePdfText}
+          title="Highlight"
+          style={{
+            background: '#fef9c3',
+            color: '#713f12'
+          }}
+        >
+          <Icon d={icons.highlight} size={14} />
+          <span style={{ fontSize: 11 }}>Mark</span>
+        </TBtn>
+        <Sep />
+
+        {/* Imagine */}
+        <TBtn onClick={() => imgInputRef.current.click()} title="Inserează imagine">
+          <Icon d={icons.image} />
+          <span style={{ fontSize: 11 }}>Image</span>
+        </TBtn>
+        <input type="file" hidden ref={imgInputRef} accept="image/*" onChange={addImage} />
+
+        {/* Semnătură */}
+        <TBtn onClick={() => setShowSignatureModal(true)} title="Adauga semnatura" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: '#fff' }}>
+          <Icon d={icons.signature} />
+          <span style={{ fontSize: 11 }}>Semnatura</span>
+        </TBtn>
+        <TBtn onClick={() => setEditExistingMode(m => !m)} title="Editează text existent" active={editExistingMode}>
+          <span style={{ fontSize: 11 }}>Edit Text{editExistingMode ? ' ✓' : ''}</span>
+        </TBtn>
+        {/* Tabel */}
+        {/* Tabel */}
+        <TableGridPicker activeEditor={activeEditor} />
+
+        {activeEditor?.isActive('table') && (
+          <>
+            <TBtn onClick={() => activeEditor.chain().focus().addRowAfter().run()} title="Adaugă rând">
+              <span style={{ fontSize: 11 }}>＋Rând</span>
+            </TBtn>
+            <TBtn onClick={() => activeEditor.chain().focus().deleteRow().run()} title="Șterge rând">
+              <span style={{ fontSize: 11 }}>－Rând</span>
+            </TBtn>
+            <TBtn onClick={() => activeEditor.chain().focus().addColumnAfter().run()} title="Adaugă coloană">
+              <span style={{ fontSize: 11 }}>＋Col</span>
+            </TBtn>
+            <TBtn onClick={() => activeEditor.chain().focus().deleteColumn().run()} title="Șterge coloană">
+              <span style={{ fontSize: 11 }}>－Col</span>
+            </TBtn>
+            <TBtn onClick={() => activeEditor.chain().focus().deleteTable().run()} title="Șterge tabelul" style={{ color: '#dc2626' }}>
+              <span style={{ fontSize: 14 }}>🗑️</span>
+              <span style={{ fontSize: 11 }}>Tabel</span>
+            </TBtn>
+          </>
+        )}
+
+
+        <Sep />
+
+        <TBtn onClick={() => setFreeTextMode(m => !m)} title="Free text press on the page" active={freeTextMode}>
+          <Icon d={icons.textFree} />
+          <span style={{ fontSize: 11 }}>Free Text{freeTextMode ? ' ✓' : ''}</span>
+        </TBtn>
+
+
+
+
+        {/* Pagina nouă + zoom + save — dreapta */}
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <TBtn onClick={addPage} title="Adaugă pagină">
+            <span style={{ fontSize: 16 }}>➕</span>
+          </TBtn>
+
+          <TBtn onClick={deletePage} title="Șterge pagina">
+            <span style={{ fontSize: 16 }}>➖</span>
+          </TBtn>
+
+          <TBtn onClick={printPDF} title="Print">
+            <span style={{ fontSize: 16 }}>🖨️</span>
+          </TBtn>
+
+          <Sep />
+
+          {/* Zoom */}
+          <div style={{ display: 'flex', alignItems: 'center', background: '#f1f5f9', borderRadius: 8, border: '1px solid #e2e8f0', overflow: 'hidden', height: 36 }}>
+            <TBtn onClick={() => setZoom(z => Math.max(0.5, z - 0.1))} title="Zoom out" style={{ borderRadius: 0 }}>
+              <Icon d={icons.minus} size={14} />
+            </TBtn>
+            <span style={{ fontSize: 12, minWidth: 40, textAlign: 'center', color: '#374151', fontWeight: 600 }}>
+              {Math.round(zoom * 100)}%
+            </span>
+            <TBtn onClick={() => setZoom(z => Math.min(2.5, z + 0.1))} title="Zoom in" style={{ borderRadius: 0 }}>
+              <Icon d={icons.plus} size={14} />
+            </TBtn>
+          </div>
+
+          <Sep />
+
+          {/* Save */}
+          <button onClick={savePDF} disabled={isSaving}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, height: 36, padding: '0 16px', borderRadius: 8, border: 'none', background: isSaving ? '#86efac' : 'linear-gradient(135deg, #16a34a, #15803d)', color: '#fff', fontWeight: 700, fontSize: 12, cursor: isSaving ? 'wait' : 'pointer', minWidth: 80 }}>
+            <Icon d={icons.save} size={14} />
+            {isSaving ? 'Saving...' : 'Save'}
+          </button>
+        </div>
       </div>
-    </>
-  )
+
+      {/* ===== CANVAS ===== */}
+      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+
+        {/* Vertical ruler */}
+        <div style={{ width: 28, background: 'rgba(255,255,255,0.4)', borderRight: '1px solid #dce8ff', flexShrink: 0, overflowY: 'hidden' }}>
+          <div style={{ height: 36 }} />
+          <VerticalRulerMargin
+            height={PAGE_HEIGHT}
+            zoom={zoom}
+            activeEditor={editorsRef.current[activePage]}
+            marginTopPx={marginTop}
+            onMarginChange={(px) => {
+              setMarginTop(px)
+            }}
+          />
+
+        </div>
+        {/* Scroll area */}
+        <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+
+          {/* Horizontal ruler — sticky, centrat cu pagina */}
+          <div style={{ position: 'sticky', top: 0, zIndex: 50, width: PAGE_WIDTH, alignSelf: 'center', background: 'rgba(255,255,255,0.95)', marginBottom: 8, boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
+            <Ruler width={PAGE_WIDTH} zoom={zoom} activeEditor={activeEditor} indentPx={indentPx} onIndentChange={setIndentPx} />
+          </div>
+
+          {/* Pagini */}
+          <div data-editors-ready={editorsReady} style={{ padding: '16px 0 40px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Document file={pdfFile} onLoadSuccess={({ numPages: n }) => setNumPages(n)} style={{ display: 'contents' }}>
+              {Array.from({ length: numPages }).map((_, i) => (
+                <div key={i} ref={el => pageRefs.current[i] = el}
+                  style={{ position: 'relative', width: PAGE_WIDTH, minHeight: PAGE_HEIGHT, background: '#fff', marginBottom: i < numPages - 1 ? PAGE_GAP : 0, boxShadow: activePage === i ? '0 0 0 3px #6366f1, 0 8px 40px rgba(99,102,241,0.25)' : '0 4px 24px rgba(0,0,0,0.18)', borderRadius: 4, overflow: 'hidden', cursor: freeTextMode ? 'crosshair' : 'text', flexShrink: 0 }}>
+                  <div className={editExistingMode ? 'edit-existing-active' : ''} style={{ pointerEvents: 'none' }}>
+                    <Page pageNumber={i + 1} scale={zoom} renderAnnotationLayer={false} />
+                  </div>
+                  {freeTextBoxes.filter(b => b.pageIndex === i).map(box => (
+                    <FreeTextInline
+                      key={box.id}
+                      id={box.id}
+                      x={box.x}
+                      y={box.y}
+                      pageRef={{ current: pageRefs.current[i] }}
+                      onRemove={() => setFreeTextBoxes(prev => prev.filter(b => b.id !== box.id))}
+                      onCommitPosition={(id, pos) => setFreeTextBoxes(prev =>
+                        prev.map(b => b.id === id ? { ...b, x: pos.x, y: pos.y } : b)
+                      )}
+                      onFocusEditable={(span) => { activeFreeTextSpanRef.current = span }}
+                      onBlurEditable={() => { /* nu mai reseta la null aici, altfel pierzi contextul la click pe toolbar */ }}
+
+                    />
+
+
+
+                  ))}
+                  {floatingImages.filter(img => img.pageIndex === i).map(img => (
+                    <FloatingImage
+                      key={img.id}
+                      id={img.id}
+                      src={img.src}
+                      x={img.x}
+                      y={img.y}
+                      width={img.width}
+                      pageRef={{ current: pageRefs.current[i] }}
+                      onRemove={() => setFloatingImages(prev => prev.filter(f => f.id !== img.id))}
+                      onCommitPosition={(id, pos) => setFloatingImages(prev => prev.map(f => f.id === id ? { ...f, x: pos.x, y: pos.y } : f))}
+                      onCommitSize={(id, w) => setFloatingImages(prev => prev.map(f => f.id === id ? { ...f, width: w } : f))}
+                    />
+                  ))}
+
+
+                  <PageOverlay
+                    editor={editorsRef.current[i]}
+                    pageIndex={i}
+                    activePage={activePage}
+                    setActivePage={setActivePage}
+                    onPageClick={(rx, ry, cx, cy) => handlePageClick(rx, ry, cx, cy, i)}
+                    freeTextMode={freeTextMode}
+                    pdfSource={pdfSource}
+                    disabled={editExistingMode}   // <-- linia noua
+                  >
+                    {editorsRef.current[i] && <EditorContent editor={editorsRef.current[i]} style={{ minHeight: '100%', outline: 'none' }} />}
+                  </PageOverlay>
+
+                  <div className="no-print" style={{ position: 'absolute', bottom: 10, right: 14, fontSize: 11, color: '#94a3b8', zIndex: 4, pointerEvents: 'none' }}>
+                    {i + 1} / {numPages}
+                  </div>
+                </div>
+              ))}
+
+
+
+            </Document>
+          </div>
+        </div>
+      </div>
+
+      {showSignatureModal && <SignatureModal onSave={handleSignatureSave} onClose={() => setShowSignatureModal(false)} />}
+    </div>
+  </>
+)
 }
-
-
-
